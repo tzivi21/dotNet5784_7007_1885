@@ -1,4 +1,6 @@
-﻿namespace DO;
+﻿
+
+namespace DO;
 /// <summary>
 /// A class that represents the dependencies of each task
 /// <param name="Id">the defining number</param>
@@ -15,11 +17,11 @@ public record Dependency
     {
         DependentTask = myDependentTask;
         DependentTask = myDependsOnTask;
-        Id=nextId++;
+        //Id=;
     }
     public Dependency() 
     {
-        Id=nextId++;
+        //Id=nextId++;
     } 
     
 
