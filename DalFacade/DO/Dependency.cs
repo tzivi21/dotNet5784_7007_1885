@@ -9,10 +9,9 @@ namespace DO;
 /// </summary>
 public record Dependency
 {
-    public static int nextId = 1;
-    public int Id { set; get; }
-    public int DependentTask { set; get; }
-    public int DependsOnTask { set; get; }
+    int Id ;
+    int DependentTask;
+    int DependsOnTask;
     public Dependency(int myDependentTask, int myDependsOnTask)
     {
         DependentTask = myDependentTask;
@@ -21,7 +20,7 @@ public record Dependency
     }
     public Dependency() 
     {
-        //Id=nextId++;
+        //Id=;
     } 
     
 

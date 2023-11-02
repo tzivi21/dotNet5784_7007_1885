@@ -1,4 +1,7 @@
-﻿namespace DO;
+﻿
+using System.Runtime.CompilerServices;
+
+namespace DO;
 /// <summary>
 /// managing Task class with all the task properties
 /// <param name="id">the identifier number of the task</param>
@@ -17,25 +20,24 @@
 /// </summary>
 public record Task
 {
-    protected static int nextId=1;
-    public int Id { set; get; }
-    public string Description { set; get; } = null;
-    public string Alias { set; get; } = null;
-    public bool Milestone { set; get; } = false;
-    public DateTime CreatedAt { set; get; } = DateTime.Now;
-    public DateTime Start { set; get; }
-    public DateTime ScheduleDate { set; get; }
-    public DateTime DeadLine { set; get; }
-    public DateTime Complete { set; get; }
-    public string Deliverables { set; get; }
-    public string Remarks { set; get; } = null;
-    public int Engineerid { set; get; }
-    public string ComplexityLevel { set; get; } = null;
+     int Id;
+     string? Description  = null;
+     string? Alias  = null;
+     bool Milestone  = false;
+     DateTime CreatedAt  = DateTime.Now;
+     DateTime Start;
+    DateTime ScheduleDate;
+    DateTime DeadLine;
+    DateTime Complete;
+    string Deliverables;
+     string? Remarks = null;
+    int Engineerid;
+     string? ComplexityLevel  = null;
     public Task(string myDescription,string myAlias, DateTime myStart, DateTime myScheduleDate
         , DateTime myDeadLine, DateTime myComplete, string myDeliverables
         , string myRemarks, int myEngineerid, string myComplexityLevel)
     {
-        Id = nextId++;
+       // Id =;
         Description=myDescription;
         Alias=myAlias;
         Start=myStart;
@@ -46,13 +48,10 @@ public record Task
         Remarks=myRemarks;
         Engineerid=myEngineerid;
         ComplexityLevel=myComplexityLevel;
-
-       // Id = config.id;
-       // config.id++;
     }
     public Task()
     {
-       // Id=nextId++;
+       // Id=;
     }
 
 }

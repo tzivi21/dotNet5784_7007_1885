@@ -1,9 +1,6 @@
 ﻿namespace DO;
 
-enum EngineerExperience
-{
-    Enginner
-}
+
 /// <summary>
 /// Engineer class with all the information about him
 /// <param name="Id">The id of the engineer</param>
@@ -13,11 +10,11 @@ enum EngineerExperience
 /// </summary>
 public record Engineer
 {
-    
-    int Id { set; get; }
-    string Name { set; get; } = null;
-    string Email { set; get; } = null;
-    EngineerExperience Level { set; get; } = EngineerExperience.Enginner;
+
+    int Id;
+    string? Name  = null;
+    string? Email = null;
+    EngineerExperience Level  = EngineerExperience.Enginner;
     public Engineer(int myId, string myName, string myEmail)
     {
         Id = myId;
