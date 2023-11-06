@@ -10,8 +10,7 @@
 /// </summary>
 public record Engineer
 {
-
-    int Id;
+    public int Id { set; get; }
     string? Name  = null;
     string? Email = null;
     EngineerExperience Level  = EngineerExperience.Enginner;

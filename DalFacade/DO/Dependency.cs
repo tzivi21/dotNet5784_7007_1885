@@ -9,7 +9,7 @@ namespace DO;
 /// </summary>
 public record Dependency
 {
-    int Id ;
+    public int Id { set; get; }
     int DependentTask;
     int DependsOnTask;
     public Dependency(int myDependentTask, int myDependsOnTask)
