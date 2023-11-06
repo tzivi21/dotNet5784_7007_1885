@@ -9,7 +9,7 @@ public class TaskImplementation : ITask
 {
     public int Create(Task item)
     {
-        int newId = DataSource.Config.NextTaskId;
+        int newId = DataSource.Config.NextTaskId;//create a running number id
         Task newItem = new Task();
         newItem = item;
         newItem.Id = newId;
@@ -19,7 +19,7 @@ public class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        // בודק אם כבר יש ברשימה אדם עם אותו ID
+        //checks if the task is in the list
         Task objectToDelete = DataSource.Tasks.FirstOrDefault(obj => obj.Id == id);
         if (objectToDelete != null)
         {
@@ -34,6 +34,7 @@ public class TaskImplementation : ITask
 
     public Task? Read(int id)
     {
+        //checks if the task is in the list
         Task objectToRead = DataSource.Tasks.FirstOrDefault(obj => obj.Id == id);
         if (objectToRead != null)
         {
@@ -53,10 +54,19 @@ public class TaskImplementation : ITask
         foreach (Task item in DataSource.Tasks)
         {
             Task newItem = new Task();
-            newItem = item;
-            // Create a new instance of the object
-            // Copy the properties or fields from the original item to the new item
-            // Example: newItem.Property = item.Property;
+            newItem.Id = item.Id;
+            newItem.Remarks = item.Remarks;
+            newItem.Complete = item.Complete;
+            newItem.Start = item.Start;
+            newItem.Alias = item.Alias;
+            newItem.Deliverables = item.Deliverables;
+            newItem.ComplexityLevel = item.ComplexityLevel;
+            newItem.CreatedAt = item.CreatedAt;
+            newItem.DeadLine = item.DeadLine;
+            newItem.Milestone = item.Milestone;
+            newItem.Description = item.Description;
+            newItem.Engineerid = item.Engineerid;
+            newItem.ScheduleDate = item.ScheduleDate;
             newTaskList.Add(newItem);
         }
         return newTaskList;
@@ -76,4 +86,5 @@ public class TaskImplementation : ITask
             throw new Exception($"אובייקט מסוג Task עם ID {item.Id} לא קיים");
         }
     }
+    
 }

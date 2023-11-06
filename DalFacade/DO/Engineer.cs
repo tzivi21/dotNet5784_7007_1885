@@ -11,14 +11,23 @@
 public record Engineer
 {
     public int Id { set; get; }
-    string? Name  = null;
-    string? Email = null;
-    EngineerExperience Level  = EngineerExperience.Enginner;
-    public Engineer(int myId, string myName, string myEmail)
+    public string? Name { set; get; }  = null;
+    public string? Email { set; get; } = null;
+    public EngineerExperience Level { set; get; }
+    public Engineer(int myId, string myName, string myEmail,EngineerExperience mylevel)
     {
         Id = myId;
         Name = myName;  
         Email = myEmail;
+        Level = mylevel;
     }
-    public Engineer() { }
+    public Engineer():this(0,"","", EngineerExperience.Expert) { }
+    public override string ToString()
+    {
+        return $"Engineer ID: {Id}\n" +
+               $"Name: {Name}\n" +
+               $"Email: {Email}\n" +
+               $"Level: {Level}\n";
+    }
+
 }

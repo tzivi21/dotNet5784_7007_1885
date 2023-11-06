@@ -20,38 +20,60 @@ namespace DO;
 /// </summary>
 public record Task
 {
-    int Id;
-    string? Description  = null;
-    string? Alias  = null;
-    bool Milestone  = false;
-    DateTime CreatedAt  = DateTime.Now;
-    DateTime Start;
-    DateTime ScheduleDate;
-    DateTime DeadLine;
-    DateTime Complete;
-    string Deliverables;
-    string? Remarks = null;
-    int Engineerid;
-    string? ComplexityLevel  = null;
-    public Task(string myDescription,string myAlias, DateTime myStart, DateTime myScheduleDate
+
+    public int Id { set; get; } = 0;
+    public string? Description { set; get; } 
+    public string? Alias { set; get; } 
+    public bool Milestone { set; get; } = false;
+    public DateTime CreatedAt { set; get; } = DateTime.Now;
+    public DateTime Start { set; get; }
+    public DateTime ScheduleDate { set; get; }
+    public DateTime DeadLine { set; get; }
+    public DateTime Complete { set; get; }
+    public string Deliverables { set; get; }
+    public string? Remarks { set; get; } 
+    public int Engineerid { set; get; }
+    public EngineerExperience? ComplexityLevel { set; get; } 
+
+    public Task():this("","", DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now,"","",0,EngineerExperience.Expert)
+    {
+
+    }
+    public override string ToString()
+    {
+        return $"Task ID: {Id}\n" +
+               $"Description: {Description}\n" +
+               $"Alias: {Alias}\n" +
+               $"Milestone: {Milestone}\n" +
+               $"Created At: {CreatedAt}\n" +
+               $"Start: {Start}\n" +
+               $"Schedule Date: {ScheduleDate}\n" +
+               $"Deadline: {DeadLine}\n" +
+               $"Complete: {Complete}\n" +
+               $"Deliverables: {Deliverables}\n" +
+               $"Remarks: {Remarks}\n" +
+               $"Engineer ID: {Engineerid}\n" +
+               $"Complexity Level: {ComplexityLevel}\n";
+    }
+    public Task(string myDescription, string myAlias, DateTime myStart, DateTime myScheduleDate
         , DateTime myDeadLine, DateTime myComplete, string myDeliverables
-        , string myRemarks, int myEngineerid, string myComplexityLevel)
+        , string myRemarks, int myEngineerid, EngineerExperience myComplexityLevel)
     {
-       // Id =;
-        Description=myDescription;
-        Alias=myAlias;
-        Start=myStart;
-        ScheduleDate=myScheduleDate;
-        DeadLine=myDeadLine;
-        Complete=myComplete;
-        Deliverables=myDeliverables;
-        Remarks=myRemarks;
-        Engineerid=myEngineerid;
-        ComplexityLevel=myComplexityLevel;
+
+        Description = myDescription;
+        Alias = myAlias;
+        Start = myStart;
+        ScheduleDate = myScheduleDate;
+        DeadLine = myDeadLine;
+        Complete = myComplete;
+        Deliverables = myDeliverables;
+        Remarks = myRemarks;
+        Engineerid = myEngineerid;
+        ComplexityLevel = myComplexityLevel;
+
     }
-    public Task()
-    {
-       // Id=;
-    }
+
+
+
 
 }

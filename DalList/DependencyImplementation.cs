@@ -8,7 +8,7 @@ public class DependencyImplementation : IDependency
 
     public int Create(Dependency item)
     {
-        int newId = DataSource.Config.NextDependencyId;
+        int newId = DataSource.Config.NextDependencyId;//create a new running number
         Dependency newItem = new Dependency();
         newItem = item;
         newItem.Id= newId;
@@ -19,7 +19,7 @@ public class DependencyImplementation : IDependency
 
     public void Delete(int id)
     {
-        // בודק אם כבר יש ברשימה אדם עם אותו ID
+        //checks if the dependency is in the list
         Dependency objectToDelete = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == id);
         if (objectToDelete != null)
         {
@@ -34,6 +34,7 @@ public class DependencyImplementation : IDependency
 
     public Dependency? Read(int id)
     {
+        //checks if the dependency is in the list
         Dependency objectToRead = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == id);
         if (objectToRead != null)
         {
@@ -52,10 +53,9 @@ public class DependencyImplementation : IDependency
         foreach (Dependency item in DataSource.Dependencies)
         {
             Dependency newItem = new Dependency();
-            newItem = item;
-            // Create a new instance of the object
-            // Copy the properties or fields from the original item to the new item
-            // Example: newItem.Property = item.Property;
+            newItem.Id = item.Id;
+            newItem.DependentTask = item.DependentTask;
+            newItem.DependsOnTask = item.DependsOnTask;
             newDependencyList.Add(newItem);
         }
         return newDependencyList;
@@ -65,7 +65,7 @@ public class DependencyImplementation : IDependency
     public void Update(Dependency item)
     {
         Dependency objectToDelete = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == item.Id);
-
+        //checks if the object to delete exist in the list
         if (objectToDelete != null)
         {
             DataSource.Dependencies.Remove(objectToDelete);

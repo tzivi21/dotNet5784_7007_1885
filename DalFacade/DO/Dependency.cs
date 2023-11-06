@@ -10,16 +10,23 @@ namespace DO;
 public record Dependency
 {
     public int Id { set; get; }
-    int DependentTask;
-    int DependsOnTask;
+    public int DependentTask { set; get; }
+    public int DependsOnTask { set; get; }
     public Dependency(int myDependentTask, int myDependsOnTask)
     {
         DependentTask = myDependentTask;
         DependentTask = myDependsOnTask;
     }
-    public Dependency() 
+    public Dependency():this(0,0)
     {
-    } 
-    
+    }
+    public override string ToString()
+    {
+        return $"Dependency ID: {Id}\n" +
+               $"Dependent Task: {DependentTask}\n" +
+               $"Depends On Task: {DependsOnTask}\n";
+    }
+
+
 
 }
