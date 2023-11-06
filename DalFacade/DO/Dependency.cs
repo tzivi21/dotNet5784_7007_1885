@@ -16,11 +16,9 @@ public record Dependency
     {
         DependentTask = myDependentTask;
         DependentTask = myDependsOnTask;
-        //Id=;
     }
     public Dependency() 
     {
-        //Id=;
     } 
     
 

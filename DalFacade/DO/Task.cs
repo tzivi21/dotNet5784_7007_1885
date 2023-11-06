@@ -20,24 +20,23 @@ namespace DO;
 /// </summary>
 public record Task
 {
-     int Id;
-     string? Description  = null;
-     string? Alias  = null;
-     bool Milestone  = false;
-     DateTime CreatedAt  = DateTime.Now;
-     DateTime Start;
+    int Id;
+    string? Description  = null;
+    string? Alias  = null;
+    bool Milestone  = false;
+    DateTime CreatedAt  = DateTime.Now;
+    DateTime Start;
     DateTime ScheduleDate;
     DateTime DeadLine;
     DateTime Complete;
     string Deliverables;
-     string? Remarks = null;
+    string? Remarks = null;
     int Engineerid;
-     string? ComplexityLevel  = null;
+    string? ComplexityLevel  = null;
     public Task(string myDescription,string myAlias, DateTime myStart, DateTime myScheduleDate
         , DateTime myDeadLine, DateTime myComplete, string myDeliverables
         , string myRemarks, int myEngineerid, string myComplexityLevel)
     {
-       // Id =;
         Description=myDescription;
         Alias=myAlias;
         Start=myStart;
@@ -51,7 +50,6 @@ public record Task
     }
     public Task()
     {
-       // Id=;
     }
 
 }
