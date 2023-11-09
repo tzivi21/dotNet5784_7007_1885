@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using DalApi;
 using DO;
-public class DependencyImplementation : IDependency
+internal class DependencyImplementation : IDependency
 {
 
     public int Create(Dependency item)

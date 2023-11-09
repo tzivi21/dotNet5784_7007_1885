@@ -7,9 +7,10 @@ using System.Collections.Generic;
 
 public static class Initialization
 {
-    private static IEngineer? s_dalEngineer;
-    private static ITask? s_dalTask;
-    private static IDependency? s_dalDependency;
+    private static IDal? s_dal;
+    //private static IEngineer? s_dalEngineer;
+    //private static ITask? s_dalTask;
+    //private static IDependency? s_dalDependency;
     private static readonly Random s_rand= new Random();
 
     private static void createEngineers()//initialize the engineers list with random values
@@ -37,8 +38,8 @@ public static class Initialization
             //picks a randon Experience from the enum 
             EngineerExperience randomExperienceNext = (EngineerExperience)s_rand.Next(Enum.GetValues(typeof(EngineerExperience)).Length);
             item.Level = randomExperienceNext;
-            if (s_dalEngineer!.Read(item.Id)==null)
-                s_dalEngineer!.Create(item);//add the item to the list
+            if (s_dal!.Engineer.Read(item.Id)==null)
+                s_dal!.Engineer.Create(item);//add the item to the list
             else
                 throw new Exception($"אובייקט מסוג Person עם ID {item.Id} כבר קיים");
         }
@@ -90,14 +91,14 @@ public static class Initialization
             item.Remarks = randomShortSentences[randomShortSentences.Length-1];
 
             //get the engineers list to get an random engineer id from it
-            List < Engineer > engineers_list= s_dalEngineer.ReadAll();//get the engineers list in order to get an id that exist
+            List < Engineer > engineers_list= s_dal!.Engineer.ReadAll();//get the engineers list in order to get an id that exist
             int randomIndex = s_rand.Next(0, engineers_list.Count-1);
             Engineer randomEngineer = engineers_list[randomIndex];
             item.Engineerid = randomEngineer.Id;
             EngineerExperience randomExperienceNext = (EngineerExperience)random.Next(Enum.GetValues(typeof(EngineerExperience)).Length);
             item.ComplexityLevel = randomExperienceNext;
-            if (s_dalTask.Read(item.Id) == null)
-                s_dalTask!.Create(item);//add the item to the list
+            if (s_dal!.Task.Read(item.Id) == null)
+                s_dal!.Task!.Create(item);//add the item to the list
             else
                 throw new Exception($"אובייקט מסוג Person עם ID {item.Id} כבר קיים");
         }
@@ -109,20 +110,21 @@ public static class Initialization
         for(int i = 0; i < 250; i++) 
         {
             Dependency item= new Dependency();
-            List<Task> tasks_list = s_dalTask.ReadAll();//get the tasks list in order to get a random task id's that exists 
+            List<Task> tasks_list = s_dal!.Task.ReadAll();//get the tasks list in order to get a random task id's that exists 
             int randomIndex1 = s_rand.Next(0, tasks_list.Count-1);
             int randomIndex2 = s_rand.Next(0, tasks_list.Count - 1);
             item.DependentTask = tasks_list[randomIndex1].Id;
             item.DependsOnTask = tasks_list[randomIndex2].Id;
-            s_dalDependency!.Create(item);
+            s_dal!.Dependency.Create(item);
         }
 
     }
-    public static void Do(IDependency? dalDependency,ITask? dalTask,IEngineer? dalEngineer)
+    public static void Do(IDal dal)
     {
-        s_dalDependency = dalDependency ?? throw new NullReferenceException("DAL can not be null!");
-        s_dalTask = dalTask ?? throw new NullReferenceException("DAL can not be null!");
-        s_dalEngineer = dalEngineer ?? throw new NullReferenceException("DAL can not be null!");
+        //s_dalDependency = dalDependency ?? throw new NullReferenceException("DAL can not be null!");
+        //s_dalTask = dalTask ?? throw new NullReferenceException("DAL can not be null!");
+        //s_dalEngineer = dalEngineer ?? throw new NullReferenceException("DAL can not be null!");
+        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
         createEngineers();
         createTasks();
         createDependencies();
