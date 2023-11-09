@@ -20,7 +20,7 @@ public class TaskImplementation : ITask
     public void Delete(int id)
     {
         //checks if the task is in the list
-        Task objectToDelete = DataSource.Tasks.FirstOrDefault(obj => obj.Id == id);
+        Task? objectToDelete = DataSource.Tasks.FirstOrDefault(obj => obj.Id == id);
         if (objectToDelete != null)
         {
             DataSource.Tasks.Remove(objectToDelete);
@@ -35,7 +35,7 @@ public class TaskImplementation : ITask
     public Task? Read(int id)
     {
         //checks if the task is in the list
-        Task objectToRead = DataSource.Tasks.FirstOrDefault(obj => obj.Id == id);
+        Task? objectToRead = DataSource.Tasks.FirstOrDefault(obj => obj.Id == id);
         if (objectToRead != null)
         {
             return objectToRead;
@@ -74,7 +74,7 @@ public class TaskImplementation : ITask
 
     public void Update(Task item)
     {
-        Task objectToDelete = DataSource.Tasks.FirstOrDefault(obj => obj.Id == item.Id);
+        Task? objectToDelete = DataSource.Tasks.FirstOrDefault(obj => obj.Id == item.Id);
 
         if (objectToDelete != null)
         {

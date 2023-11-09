@@ -10,8 +10,8 @@ namespace DO;
 public record Dependency
 {
     public int Id { set; get; }
-    public int DependentTask { set; get; }
-    public int DependsOnTask { set; get; }
+    public int? DependentTask { set; get; }
+    public int? DependsOnTask { set; get; }
     public Dependency(int myDependentTask, int myDependsOnTask)
     {
         DependentTask = myDependentTask;

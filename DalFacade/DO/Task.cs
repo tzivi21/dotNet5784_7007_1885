@@ -24,15 +24,15 @@ public record Task
     public int Id { set; get; } = 0;
     public string? Description { set; get; } 
     public string? Alias { set; get; } 
-    public bool Milestone { set; get; } = false;
+    public bool? Milestone { set; get; } = false;
     public DateTime CreatedAt { set; get; } = DateTime.Now;
     public DateTime Start { set; get; }
     public DateTime ScheduleDate { set; get; }
     public DateTime DeadLine { set; get; }
     public DateTime Complete { set; get; }
-    public string Deliverables { set; get; }
+    public string? Deliverables { set; get; }
     public string? Remarks { set; get; } 
-    public int Engineerid { set; get; }
+    public int? Engineerid { set; get; }
     public EngineerExperience? ComplexityLevel { set; get; } 
 
     public Task():this("","", DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now,"","",0,EngineerExperience.Expert)

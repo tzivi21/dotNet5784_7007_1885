@@ -29,7 +29,7 @@ public class EngineerImplementation : IEngineer
     public void Delete(int id)
     {
         //checks if this engineer is already exists
-        Engineer objectToDelete = DataSource.Engineers.FirstOrDefault(obj => obj.Id == id);
+        Engineer? objectToDelete = DataSource.Engineers.FirstOrDefault(obj => obj.Id == id);
         if (objectToDelete != null)
         {
             DataSource.Engineers.Remove(objectToDelete);
@@ -43,7 +43,7 @@ public class EngineerImplementation : IEngineer
 
     public Engineer? Read(int id)
     {
-        Engineer objectToRead = DataSource.Engineers.FirstOrDefault(obj => obj.Id == id);
+        Engineer? objectToRead = DataSource.Engineers.FirstOrDefault(obj => obj.Id == id);
         if (objectToRead != null)
         {
             return objectToRead;
@@ -73,7 +73,7 @@ public class EngineerImplementation : IEngineer
 
 public void Update(Engineer item)
     {
-        Engineer objectToDelete = DataSource.Engineers.FirstOrDefault(obj => obj.Id == item.Id);
+        Engineer? objectToDelete = DataSource.Engineers.FirstOrDefault(obj => obj.Id == item.Id);
 
         if (objectToDelete != null)
         {

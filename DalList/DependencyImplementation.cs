@@ -20,7 +20,7 @@ public class DependencyImplementation : IDependency
     public void Delete(int id)
     {
         //checks if the dependency is in the list
-        Dependency objectToDelete = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == id);
+        Dependency? objectToDelete = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == id);
         if (objectToDelete != null)
         {
             DataSource.Dependencies.Remove(objectToDelete);
@@ -35,7 +35,7 @@ public class DependencyImplementation : IDependency
     public Dependency? Read(int id)
     {
         //checks if the dependency is in the list
-        Dependency objectToRead = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == id);
+        Dependency? objectToRead = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == id);
         if (objectToRead != null)
         {
             return objectToRead;
@@ -64,7 +64,7 @@ public class DependencyImplementation : IDependency
 
     public void Update(Dependency item)
     {
-        Dependency objectToDelete = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == item.Id);
+        Dependency? objectToDelete = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == item.Id);
         //checks if the object to delete exist in the list
         if (objectToDelete != null)
         {

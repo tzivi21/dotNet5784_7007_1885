@@ -2,7 +2,7 @@
 using DalApi;
 using DO;
 using DalTest;
-
+using System.Reflection;
 
 class Program
 {
@@ -228,7 +228,7 @@ class Program
         Console.WriteLine("הכנס מספר מזהה של המשימה שתרצה לראות:");
         int.TryParse(Console.ReadLine(), out id);
 
-        DO.Task task = s_dalTask.Read(id);
+        DO.Task? task = s_dalTask.Read(id);
         if(task != null)
         {
             Console.WriteLine(task);
@@ -256,10 +256,22 @@ class Program
         int id;
         Console.WriteLine("הכנס מספר מזהה של המשימה שברצונך לעדכן:");
         int.TryParse(Console.ReadLine(), out id);
-        DO.Task task = s_dalTask.Read(id);
+        DO.Task? task = s_dalTask.Read(id);
         if(task != null) {
             Console.WriteLine(task);
             DO.Task updatedTask= ReadTaskFromUser();
+            FieldInfo[] fields = updatedTask.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
+            // Loop through each field
+            foreach (FieldInfo field in fields)
+            {
+                
+                object? fieldValue = field.GetValue(updatedTask);
+                if (fieldValue == null|| DateTime.Equals(fieldValue, DateTime.MinValue)|| fieldValue == "")
+                {
+                    field.SetValue(updatedTask, field.GetValue(task));
+                }
+            }
             updatedTask.Id = id;//update the new task's id to be the same as the task the user want to update
             s_dalTask.Update(updatedTask);
             Console.WriteLine(s_dalTask.Read(id));//prints the task after the update
@@ -277,68 +289,52 @@ class Program
     static DO.Task ReadTaskFromUser()
     {
         Console.WriteLine("Enter Task Data:");
-
         // Input fields
-        
-
         Console.Write("Description: ");
-        string description = Console.ReadLine();
+        string? description = Console.ReadLine();
 
         Console.Write("Alias: ");
-        string alias = Console.ReadLine();
+        string? alias = Console.ReadLine();
 
         Console.Write("Milestone (true/false): ");
-        bool milestone;
-        if (!bool.TryParse(Console.ReadLine(), out milestone))
+        bool milestone1;
+        bool? milestone=null;
+        if (bool.TryParse(Console.ReadLine(), out milestone1))
         {
-            Console.WriteLine("Invalid Milestone value. Aborting.");
-            return null;
+            milestone = milestone1;
         }
 
         Console.Write("Start Date (yyyy-MM-dd HH:mm:ss): ");
-        DateTime start;
-        if (!DateTime.TryParse(Console.ReadLine(), out start))
-        {
-            Console.WriteLine("Invalid Start Date format. Aborting.");
-            return null;
-        }
-
+        DateTime start= DateTime.MinValue;
+        DateTime.TryParse(Console.ReadLine(), out start);
+ 
         Console.Write("Schedule Date (yyyy-MM-dd HH:mm:ss): ");
-        DateTime scheduleDate;
-        if (!DateTime.TryParse(Console.ReadLine(), out scheduleDate))
-        {
-            Console.WriteLine("Invalid Schedule Date format. Aborting.");
-            return null;
-        }
+        DateTime scheduleDate= DateTime.MinValue;
+        DateTime.TryParse(Console.ReadLine(), out scheduleDate);
+
 
         Console.Write("Deadline (yyyy-MM-dd HH:mm:ss): ");
-        DateTime deadline;
-        if (!DateTime.TryParse(Console.ReadLine(), out deadline))
-        {
-            Console.WriteLine("Invalid Deadline format. Aborting.");
-            return null;
-        }
+        DateTime deadline= DateTime.MinValue;
+        DateTime.TryParse(Console.ReadLine(), out deadline);
 
         Console.Write("Complete Date (yyyy-MM-dd HH:mm:ss): ");
-        DateTime complete;
-        if (!DateTime.TryParse(Console.ReadLine(), out complete))
-        {
-            Console.WriteLine("Invalid Complete Date format. Aborting.");
-            return null;
-        }
+        DateTime complete = DateTime.MinValue;
+
+        DateTime.TryParse(Console.ReadLine(), out complete);
 
         Console.Write("Deliverables: ");
-        string deliverables = Console.ReadLine();
+        string? deliverables = Console.ReadLine();
 
         Console.Write("Remarks: ");
-        string remarks = Console.ReadLine();
+        string? remarks = Console.ReadLine();
 
         Console.Write("Engineer ID: ");
-        int engineerId;
-        if (!int.TryParse(Console.ReadLine(), out engineerId))
+        int engineerId1;
+        int? engineerId=null;
+
+        if (int.TryParse(Console.ReadLine(), out engineerId1))
         {
-            Console.WriteLine("Invalid Engineer ID. Aborting.");
-            return null;
+            engineerId= engineerId1;
         }
 
         Console.WriteLine("Choose Engineer Experience Level:");
@@ -350,7 +346,7 @@ class Program
 
         Console.Write("Enter the corresponding number: ");
 
-        EngineerExperience complexityLevel;
+        EngineerExperience? complexityLevel;
         if (int.TryParse(Console.ReadLine(), out int levelChoice))
         {
             
@@ -373,16 +369,15 @@ class Program
                     complexityLevel = EngineerExperience.Proficient;
                     break;
                 default:
-                    Console.WriteLine("Invalid choice. Aborting.");
-                    return null;
+                    complexityLevel = null;
+                    break;
             }
         }
         else
         {
-            Console.WriteLine("Invalid choice. Aborting.");
-            return null;
+            complexityLevel = null;
         }
-    
+
 
         // Create and return a new Task object
         return  new DO.Task
@@ -414,7 +409,7 @@ class Program
         Console.WriteLine("הכנס מספר מזהה של המהנדס שתרצה לראות:");
         int.TryParse(Console.ReadLine(), out id);
 
-        DO.Engineer engineer = s_dalEngineer.Read(id);
+        DO.Engineer? engineer = s_dalEngineer.Read(id);
         if (engineer != null)
         {
             Console.WriteLine(engineer);
@@ -443,11 +438,23 @@ class Program
         int id;
         Console.WriteLine("הכנס מספר מזהה של המהנדס שברצונך לעדכן:");
         int.TryParse(Console.ReadLine(), out id);
-        DO.Engineer engineer = s_dalEngineer.Read(id);
+        DO.Engineer? engineer = s_dalEngineer.Read(id);
         if (engineer != null)
         {
             Console.WriteLine(engineer);
             DO.Engineer updatedEngineer = ReadEngineerFromUser();
+            FieldInfo[] fields = updatedEngineer.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
+            // Loop through each field
+            foreach (FieldInfo field in fields)
+            {
+                //string fieldName = field.Name;
+                object? fieldValue = field.GetValue(updatedEngineer);
+                if (fieldValue == null|| fieldValue=="")
+                {
+                    field.SetValue(updatedEngineer, field.GetValue(engineer));
+                }
+            }
             s_dalEngineer.Update(updatedEngineer);
             Console.WriteLine(s_dalEngineer.Read(id));//prints the updated engineer
         }
@@ -479,7 +486,7 @@ class Program
         Console.WriteLine("הכנס מספר מזהה של התלות שתרצה לראות:");
         int.TryParse(Console.ReadLine(), out id);
 
-        DO.Dependency dependency = s_dalDependency.Read(id);
+        DO.Dependency? dependency = s_dalDependency.Read(id);
         if (dependency != null)
         {
             Console.WriteLine(dependency);
@@ -508,11 +515,22 @@ class Program
         int id;
         Console.WriteLine("הכנס מספר מזהה של התלות שברצונך לעדכן:");
         int.TryParse(Console.ReadLine(), out id);
-        DO.Dependency dependency = s_dalDependency.Read(id);
+        DO.Dependency? dependency = s_dalDependency.Read(id);
         if (dependency != null)
         {
             Console.WriteLine(dependency);
             DO.Dependency updatedDependency = ReadDependencyFromUser();
+            FieldInfo[] fields = updatedDependency.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
+            // Loop through each field
+            foreach (FieldInfo field in fields)
+            {
+                //string fieldName = field.Name;
+                object? fieldValue = field.GetValue(updatedDependency);
+                if (fieldValue == null|| fieldValue=="") {
+                    field.SetValue(updatedDependency, field.GetValue(dependency));
+                }
+            }
             updatedDependency.Id= id;//update the new dependency's id to be the same as the task the user want to update
             s_dalDependency.Update(updatedDependency);
             Console.WriteLine(s_dalDependency.Read(id));//prints the updated value
@@ -531,32 +549,23 @@ class Program
     static Engineer ReadEngineerFromUser()
     {
         Console.WriteLine("Enter Engineer Data:");
-
         // Input fields
         Console.Write("ID: ");
         int id;
-        if (!int.TryParse(Console.ReadLine(), out id))
-        {
-            Console.WriteLine("Invalid ID. Aborting.");
-            return null;
-        }
-
+        int.TryParse(Console.ReadLine(), out id);
         Console.Write("Name: ");
-        string name = Console.ReadLine();
-
+        string? name = Console.ReadLine();
         Console.Write("Email: ");
-        string email = Console.ReadLine();
-
+        string? email = Console.ReadLine();
         Console.WriteLine("Choose Engineer Experience Level:");
         Console.WriteLine("1. Expert");
         Console.WriteLine("2. Novice");
         Console.WriteLine("3. AdvancedBeginner");
         Console.WriteLine("4. Competent");
         Console.WriteLine("5. Proficient");
-
         Console.Write("Enter the corresponding number: ");
 
-        EngineerExperience complexityLevel;
+        EngineerExperience? complexityLevel;
         if (int.TryParse(Console.ReadLine(), out int levelChoice))
         {
 
@@ -579,14 +588,14 @@ class Program
                     complexityLevel = EngineerExperience.Proficient;
                     break;
                 default:
-                    Console.WriteLine("Invalid choice. Aborting.");
-                    return null;
+                    complexityLevel=null;
+                    break;
+            
             }
         }
         else
         {
-            Console.WriteLine("Invalid choice. Aborting.");
-            return null;
+            complexityLevel = null;
         }
 
         // Create and return a new Engineer object
@@ -602,23 +611,23 @@ class Program
     {
         Console.WriteLine("Enter Dependency Data:");
 
-        // Input fields
-       
-
+        // Input fields     
         Console.Write("Dependent Task ID: ");
-        int dependentTask;
-        if (!int.TryParse(Console.ReadLine(), out dependentTask))
+        int dependentTask1;
+        //the TryParse method cant read into a nullable variable,the variablea should be nullables for the case of update
+        //Use the same approach as mentioned above for all data intake functions in the program class
+        int? dependentTask=null;
+        if (int.TryParse(Console.ReadLine(), out dependentTask1))
         {
-            Console.WriteLine("Invalid Dependent Task ID. Aborting.");
-            return null;
+            dependentTask = dependentTask1;
         }
 
         Console.Write("Depends On Task ID: ");
-        int dependsOnTask;
-        if (!int.TryParse(Console.ReadLine(), out dependsOnTask))
+        int dependsOnTask1;
+        int? dependsOnTask=null;
+        if (int.TryParse(Console.ReadLine(), out dependsOnTask1))
         {
-            Console.WriteLine("Invalid Depends On Task ID. Aborting.");
-            return null;
+            dependsOnTask = dependsOnTask1;
         }
 
         // Create and return a new Dependency object
