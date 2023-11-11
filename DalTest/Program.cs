@@ -6,14 +6,12 @@ using System.Reflection;
 
 class Program
 {
-    private static ITask? s_dalTask = new TaskImplementation();
-    private static IEngineer? s_dalEngineer = new EngineerImplementation();
-    private static IDependency? s_dalDependency = new DependencyImplementation();
-
+    private static readonly IDal? s_dal = new DalList();
+ 
     static void Main()
     {
         try {
-            Initialization.Do(s_dalDependency, s_dalTask,s_dalEngineer);
+            Initialization.Do(s_dal);
             mainMenu();
         }
         catch ( Exception ex)
