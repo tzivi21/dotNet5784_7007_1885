@@ -27,7 +27,7 @@ internal class TaskImplementation : ITask
         }
         else
         {
-            throw new Exception($"אובייקט מסוג Task עם ID {id} לא קיים");
+            throw new DalDoesNotExistException($"אובייקט מסוג Task עם ID {id} לא קיים");
 
         }
     }
@@ -83,7 +83,7 @@ internal class TaskImplementation : ITask
         }
         else
         {
-            throw new Exception($"אובייקט מסוג Task עם ID {item.Id} לא קיים");
+            throw new DalDoesNotExistException($"אובייקט מסוג Task עם ID {item.Id} לא קיים");
         }
     }
     

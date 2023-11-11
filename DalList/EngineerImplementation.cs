@@ -14,7 +14,7 @@ internal class EngineerImplementation : IEngineer
         //checks if this engineer is already exists
         if (DataSource.Engineers.Exists(p => p.Id == item.Id))
         {
-            throw new Exception($"אובייקט מסוג Person עם ID {item.Id} כבר קיים");
+            throw new DalAlreadyExistException($"אובייקט מסוג Person עם ID {item.Id} כבר קיים");
         }
 
         //adds the engineer to list if he doesn't already exists
@@ -36,7 +36,7 @@ internal class EngineerImplementation : IEngineer
         }
         else
         {
-            throw new Exception($"אובייקט מסוג Person עם ID {id} לא קיים");
+            throw new DalDoesNotExistException($"אובייקט מסוג Person עם ID {id} לא קיים");
 
         }
     }
@@ -82,7 +82,7 @@ public void Update(Engineer item)
         }
         else
         {
-            throw new Exception($"אובייקט מסוג Person עם ID {item.Id} לא קיים");
+            throw new DalDoesNotExistException($"אובייקט מסוג Person עם ID {item.Id} לא קיים");
         }
     }
 }

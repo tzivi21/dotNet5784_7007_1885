@@ -27,7 +27,7 @@ internal class DependencyImplementation : IDependency
         }
         else
         {
-            throw new Exception($"אובייקט מסוג Dependency עם ID {id} לא קיים");
+            throw new DalDoesNotExistException($"אובייקט מסוג Dependency עם ID {id} לא קיים");
 
         }
     }
@@ -73,7 +73,7 @@ internal class DependencyImplementation : IDependency
         }
         else
         {
-            throw new Exception($"אובייקט מסוג Dependency עם ID {item.Id} לא קיים");
+            throw new DalDoesNotExistException($"אובייקט מסוג Dependency עם ID {item.Id} לא קיים");
         }
     }
 }
