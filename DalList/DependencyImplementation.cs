@@ -1,5 +1,4 @@
 ﻿namespace Dal;
-
 using System.Collections.Generic;
 using DalApi;
 using DO;
@@ -20,6 +19,7 @@ internal class DependencyImplementation : IDependency
     public void Delete(int id)
     {
         //checks if the dependency is in the list
+  
         Dependency? objectToDelete = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == id);
         if (objectToDelete != null)
         {
@@ -34,6 +34,7 @@ internal class DependencyImplementation : IDependency
 
     public Dependency? Read(int id)
     {
+
         //checks if the dependency is in the list
         Dependency? objectToRead = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == id);
         if (objectToRead != null)
@@ -46,8 +47,13 @@ internal class DependencyImplementation : IDependency
         }
     }
 
-    public List<Dependency> ReadAll()
-    {
+    public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null) {
+        if (filter != null)
+        {
+            return from d in DataSource.Dependencies
+                   where filter(d)
+                   select d;
+        }
         List<Dependency> newDependencyList = new List<Dependency>();
 
         foreach (Dependency item in DataSource.Dependencies)
@@ -75,5 +81,9 @@ internal class DependencyImplementation : IDependency
         {
             throw new DalDoesNotExistException($"אובייקט מסוג Dependency עם ID {item.Id} לא קיים");
         }
+    }
+    public Dependency? Read(Func<Dependency, bool> filter)
+    {
+        return DataSource.Dependencies.FirstOrDefault(dependency => filter(dependency));
     }
 }

@@ -1,5 +1,4 @@
 ﻿namespace Dal;
-
 using System;
 using System.Collections.Generic;
 using DalApi;
@@ -46,8 +45,14 @@ internal class TaskImplementation : ITask
         }
     }
 
-    public List<Task> ReadAll()
+    public  IEnumerable<Task?> ReadAll(Func<Task, bool>? filter = null)
     {
+        if (filter != null)
+        {
+            return from t in DataSource.Tasks
+                   where filter(t)
+                   select t;
+        }
 
         List<Task> newTaskList = new List<Task  >();
 
@@ -86,5 +91,9 @@ internal class TaskImplementation : ITask
             throw new DalDoesNotExistException($"אובייקט מסוג Task עם ID {item.Id} לא קיים");
         }
     }
-    
+    public Task? Read(Func<Task, bool> filter)
+    {
+        return DataSource.Tasks.FirstOrDefault(task => filter(task));
+    }
+
 }

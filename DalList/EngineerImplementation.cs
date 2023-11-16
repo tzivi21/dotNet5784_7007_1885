@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using DalApi;
 using DO;
 
@@ -54,36 +55,46 @@ internal class EngineerImplementation : IEngineer
         }
     }
 
-    public List<Engineer> ReadAll()
+    public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null)
     {
-            List<Engineer> newEngineerList = new List<Engineer>();
+        if (filter != null)
+        {
+            return from engineer in DataSource.Engineers
+                   where filter(engineer)
+                   select engineer;
+        }
+        List<Engineer> newEngineerList = new List<Engineer>();
 
-            foreach (Engineer item in DataSource.Engineers)
-                {
-                    Engineer newItem = new Engineer();
-                    newItem.Id = item.Id;
-                    newItem.Name = item.Name;
-                    newItem.Email = item.Email;
-                    newItem.Level = item.Level;
-                    newEngineerList.Add(newItem);
-                }
-            return newEngineerList;
+        foreach (Engineer item in DataSource.Engineers)
+            {
+                Engineer newItem = new Engineer();
+                newItem.Id = item.Id;
+                newItem.Name = item.Name;
+                newItem.Email = item.Email;
+                newItem.Level = item.Level;
+                newEngineerList.Add(newItem);
+            }
+        return newEngineerList;
 
     }
 
-public void Update(Engineer item)
-    {
-        Engineer? objectToDelete = DataSource.Engineers.FirstOrDefault(obj => obj.Id == item.Id);
+    public void Update(Engineer item)
+        {
+            Engineer? objectToDelete = DataSource.Engineers.FirstOrDefault(obj => obj.Id == item.Id);
 
-        if (objectToDelete != null)
-        {
-            DataSource.Engineers.Remove(objectToDelete);
-            DataSource.Engineers.Add(item);
+            if (objectToDelete != null)
+            {
+                DataSource.Engineers.Remove(objectToDelete);
+                DataSource.Engineers.Add(item);
+            }
+            else
+            {
+                throw new DalDoesNotExistException($"אובייקט מסוג Person עם ID {item.Id} לא קיים");
+            }
         }
-        else
-        {
-            throw new DalDoesNotExistException($"אובייקט מסוג Person עם ID {item.Id} לא קיים");
-        }
+    public Engineer? Read(Func<Engineer, bool> filter)
+    {
+        return DataSource.Engineers.FirstOrDefault(engineer => filter(engineer));
     }
 }
 
