@@ -7,6 +7,12 @@ using System.Xml.Linq;
 
 internal class DependencyImplementation : IDependency
 {
+    /// <summary>
+    /// create a new dependency entity
+    /// </summary>
+    /// <param name="item">dependency to add</param>
+    /// <returns>the id of the dependency that has been added</returns>
+    /// <exception cref="DalAlreadyExistException"></exception>
     public int Create(Dependency item)
     {
         XElement XMLdependecies =XMLTools. LoadListFromXMLElement("Dependencies.xml");
@@ -19,7 +25,11 @@ internal class DependencyImplementation : IDependency
         XMLTools.SaveListToXMLElement(XMLdependecies, "Dependencies.xml");//send the the updated list to the xml
         return newId;
     }
-
+    /// <summary>
+    /// delete an dependency entity
+    /// </summary>
+    /// <param name="id">the id of the dependency to delete</param>
+    /// <exception cref="DalDoesNotExistException"></exception>
     public void Delete(int id)
     {
         XElement XMLdependecies = XMLTools.LoadListFromXMLElement("Dependencies.xml");
@@ -37,7 +47,11 @@ internal class DependencyImplementation : IDependency
 
         }
     }
-
+    /// <summary>
+    /// reads a certaun dependency 
+    /// </summary>
+    /// <param name="id">the id of the dependency to read</param>
+    /// <returns>the dependency with the id</returns>
     public Dependency? Read(int id)
     {
         XElement XMLdependecies = XMLTools.LoadListFromXMLElement("Dependencies.xml");
@@ -55,7 +69,11 @@ internal class DependencyImplementation : IDependency
             return null;
         }
     }
-    
+    /// <summary>
+    /// reads the first dependency that true to the condition
+    /// </summary>
+    /// <param name="filter">lamda function who checks the cindition</param>
+    /// <returns>the first dependency that is true to the condition</returns>
     public Dependency? Read(Func<Dependency, bool> filter)
     {
         XElement XMLdependecies = XMLTools.LoadListFromXMLElement("Dependencies.xml");
@@ -78,7 +96,11 @@ internal class DependencyImplementation : IDependency
             return null;
         }
     }
-
+    /// <summary>
+    /// reads all the list of dependencies /all the dependencies that are true to the condition
+    /// </summary>
+    /// <param name="filter">lamda function who checks the cindition</param>
+    /// <returns>a list of items that are true to the condition</returns>
     public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null)
     {
         XElement XMLdependecies = XMLTools.LoadListFromXMLElement("Dependencies.xml");
@@ -115,7 +137,11 @@ internal class DependencyImplementation : IDependency
         }
 
     }
-
+    /// /// <summary>
+    /// updated a specific dependency
+    /// </summary>
+    /// <param name="item">the item for the update</param>
+    /// <exception cref="DalDoesNotExistException"></exception>
     public void Update(Dependency item)
     {
         XElement XMLdependecies = XMLTools.LoadListFromXMLElement("Dependencies.xml");
