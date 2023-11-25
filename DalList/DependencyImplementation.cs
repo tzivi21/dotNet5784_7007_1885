@@ -64,16 +64,18 @@ internal class DependencyImplementation : IDependency
 
     public void Update(Dependency item)
     {
-        Dependency? objectToDelete = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == item.Id);
-        //checks if the object to delete exist in the list
-        if (objectToDelete != null)
-        {
-            DataSource.Dependencies.Remove(objectToDelete);
-            DataSource.Dependencies.Add(item);
-        }
-        else
-        {
-            throw new Exception($"אובייקט מסוג Dependency עם ID {item.Id} לא קיים");
-        }
+        //Dependency? objectToDelete = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == item.Id);
+        ////checks if the object to delete exist in the list
+        //if (objectToDelete != null)
+        //{
+        //    DataSource.Dependencies.Remove(objectToDelete);
+        //    DataSource.Dependencies.Add(item);
+        //}
+        //else
+        //{
+        //    throw new Exception($"אובייקט מסוג Dependency עם ID {item.Id} לא קיים");
+        //}
+        DataSource.Dependencies.Update(item);
+        DataSource.Dependencies.SaveChanges();
     }
 }
