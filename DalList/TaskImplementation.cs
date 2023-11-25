@@ -1,5 +1,4 @@
 ﻿namespace Dal;
-
 using System;
 using System.Collections.Generic;
 using DalApi;
@@ -7,6 +6,12 @@ using DO;
 
 internal class TaskImplementation : ITask
 {
+    /// <summary>
+    /// create a new task entity
+    /// </summary>
+    /// <param name="item">task to add</param>
+    /// <returns>the id of the task that has been added</returns>
+    /// <exception cref="DalAlreadyExistException"></exception>
     public int Create(Task item)
     {
         int newId = DataSource.Config.NextTaskId;//create a running number id
@@ -16,7 +21,11 @@ internal class TaskImplementation : ITask
         DataSource.Tasks.Add(newItem);
         return newId;
     }
-
+    /// <summary>
+    /// delete an task entity
+    /// </summary>
+    /// <param name="id">the id of the task to delete</param>
+    /// <exception cref="DalDoesNotExistException"></exception>
     public void Delete(int id)
     {
         //checks if the task is in the list
@@ -27,11 +36,15 @@ internal class TaskImplementation : ITask
         }
         else
         {
-            throw new Exception($"אובייקט מסוג Task עם ID {id} לא קיים");
+            throw new DalDoesNotExistException($"אובייקט מסוג Task עם ID {id} לא קיים");
 
         }
     }
-
+    /// <summary>
+    /// reads a certain task 
+    /// </summary>
+    /// <param name="id">the id of the task to read</param>
+    /// <returns>the task with the id</returns>
     public Task? Read(int id)
     {
         //checks if the task is in the list
@@ -46,8 +59,19 @@ internal class TaskImplementation : ITask
         }
     }
 
-    public List<Task> ReadAll()
+    /// /// <summary>
+    /// reads all the list of tasks /all the tasks that are true to the condition
+    /// </summary>
+    /// <param name="filter">lamda function who checks the cindition</param>
+    /// <returns>a list of items that are true to the condition</returns>
+    public IEnumerable<Task?> ReadAll(Func<Task, bool>? filter = null)
     {
+        if (filter != null)
+        {
+            return from t in DataSource.Tasks
+                   where filter(t)
+                   select t;
+        }
 
         List<Task> newTaskList = new List<Task  >();
 
@@ -72,6 +96,11 @@ internal class TaskImplementation : ITask
         return newTaskList;
     }
 
+    /// /// /// <summary>
+    /// updated a specific task
+    /// </summary>
+    /// <param name="item">the item for the update</param>
+    /// <exception cref="DalDoesNotExistException"></exception>
     public void Update(Task item)
     {
         Task? objectToDelete = DataSource.Tasks.FirstOrDefault(obj => obj.Id == item.Id);
@@ -83,8 +112,17 @@ internal class TaskImplementation : ITask
         }
         else
         {
-            throw new Exception($"אובייקט מסוג Task עם ID {item.Id} לא קיים");
+            throw new DalDoesNotExistException($"אובייקט מסוג Task עם ID {item.Id} לא קיים");
         }
     }
-    
+    /// <summary>
+    /// reads the first task that true to the condition
+    /// </summary>
+    /// <param name="filter">lamda function who checks the cindition</param>
+    /// <returns>the first task that is true to the condition</returns>
+    public Task? Read(Func<Task, bool> filter)
+    {
+        return DataSource.Tasks.FirstOrDefault(task => filter(task));
+    }
+
 }

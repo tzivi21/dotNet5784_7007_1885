@@ -91,7 +91,7 @@ public static class Initialization
             item.Remarks = randomShortSentences[randomShortSentences.Length-1];
 
             //get the engineers list to get an random engineer id from it
-            List < Engineer > engineers_list= s_dal!.Engineer.ReadAll();//get the engineers list in order to get an id that exist
+            List < Engineer? > engineers_list= s_dal!.Engineer.ReadAll().ToList();//get the engineers list in order to get an id that exist
             int randomIndex = s_rand.Next(0, engineers_list.Count-1);
             Engineer randomEngineer = engineers_list[randomIndex];
             item.Engineerid = randomEngineer.Id;
@@ -110,7 +110,7 @@ public static class Initialization
         for(int i = 0; i < 250; i++) 
         {
             Dependency item= new Dependency();
-            List<Task> tasks_list = s_dal!.Task.ReadAll();//get the tasks list in order to get a random task id's that exists 
+            List<Task?> tasks_list = s_dal!.Task.ReadAll().ToList();//get the tasks list in order to get a random task id's that exists 
             int randomIndex1 = s_rand.Next(0, tasks_list.Count-1);
             int randomIndex2 = s_rand.Next(0, tasks_list.Count - 1);
             item.DependentTask = tasks_list[randomIndex1].Id;
