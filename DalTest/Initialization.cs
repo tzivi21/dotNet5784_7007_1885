@@ -8,9 +8,6 @@ using System.Collections.Generic;
 public static class Initialization
 {
     private static IDal? s_dal;
-    //private static IEngineer? s_dalEngineer;
-    //private static ITask? s_dalTask;
-    //private static IDependency? s_dalDependency;
     private static readonly Random s_rand= new Random();
 
     private static void createEngineers()//initialize the engineers list with random values
@@ -121,9 +118,7 @@ public static class Initialization
     }
     public static void Do(IDal dal)
     {
-        //s_dalDependency = dalDependency ?? throw new NullReferenceException("DAL can not be null!");
-        //s_dalTask = dalTask ?? throw new NullReferenceException("DAL can not be null!");
-        //s_dalEngineer = dalEngineer ?? throw new NullReferenceException("DAL can not be null!");
+        
         s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
         createEngineers();
         createTasks();
