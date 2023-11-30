@@ -14,13 +14,13 @@ public class TaskImplementation : ITask
     public int Create(DO.Task item)
     {
 
-        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks.xml");//load the list of utems from file
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks");//load the list of utems from file
 
         int newId = Config.NextTaskId;//set the running id
         item.Id = newId;
 
         tasks.Add(item);//add to the list
-        XMLTools.SaveListToXMLSerializer(tasks, "Tasks.xml");
+        XMLTools.SaveListToXMLSerializer(tasks, "Tasks");
 
         return newId;
     }
@@ -31,13 +31,13 @@ public class TaskImplementation : ITask
     /// <exception cref="DalDoesNotExistException"></exception>
     public void Delete(int id)
     {
-        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks.xml");
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks");
 
         DO.Task? toDelete = tasks.FirstOrDefault(t => t.Id == id);
         if (toDelete != null)
         {
             tasks.Remove(toDelete);
-            XMLTools.SaveListToXMLSerializer(tasks, "Tasks.xml");
+            XMLTools.SaveListToXMLSerializer(tasks, "Tasks");
         }
         else
         {
@@ -51,7 +51,7 @@ public class TaskImplementation : ITask
     /// <returns>the task with the id</returns>
     public DO.Task? Read(int id)
     {
-        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks.xml");
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks");
         return tasks.FirstOrDefault(t => t.Id == id);
     }
     /// <summary>
@@ -61,7 +61,7 @@ public class TaskImplementation : ITask
     /// <returns>the first task that is true to the condition</returns>
     public DO.Task? Read(Func<DO.Task, bool> filter)
     {
-        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks.xml");
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks");
         return tasks.FirstOrDefault(filter);
     }
     /// <summary>
@@ -71,7 +71,7 @@ public class TaskImplementation : ITask
     /// <returns>a list of items that are true to the condition</returns>
     public IEnumerable<DO.Task?> ReadAll(Func<DO.Task, bool>? filter = null)
     {
-        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks.xml");
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks");
         return filter != null ? tasks.Where(filter) : tasks;
     }
     /// /// <summary>
@@ -81,14 +81,14 @@ public class TaskImplementation : ITask
     /// <exception cref="DalDoesNotExistException"></exception>
     public void Update(DO.Task item)
     {
-        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks.xml");
+        List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>("Tasks");
 
         DO.Task? toUpdate = tasks.FirstOrDefault(t => t.Id == item.Id);
         if (toUpdate != null)
         {
             int index = tasks.IndexOf(toUpdate);
             tasks[index] = item;
-            XMLTools.SaveListToXMLSerializer(tasks, "Tasks.xml");
+            XMLTools.SaveListToXMLSerializer(tasks, "Tasks");
         }
         else
         {
