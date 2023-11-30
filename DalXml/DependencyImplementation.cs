@@ -14,7 +14,7 @@ internal class DependencyImplementation : IDependency
     /// <exception cref="DalAlreadyExistException"></exception>
     public int Create(Dependency item)
     {
-        XElement XMLdependecies =XMLTools. LoadListFromXMLElement("Dependencies");
+        XElement XMLdependecies =XMLTools. LoadListFromXMLElement("depndencies");
         int newId = Config.NextDependencyId;//create a new running number
         XElement newDependency = new XElement("Dependency",//create a new xml elememnt
             new XElement("Id", newId));
@@ -28,7 +28,7 @@ internal class DependencyImplementation : IDependency
             newDependency.Add(new XElement("DependsOnTask", item.DependsOnTask));
         }
         XMLdependecies.Add(newDependency);//addes to the list       
-        XMLTools.SaveListToXMLElement(XMLdependecies, "Dependencies.xml");//send the the updated list to the xml
+        XMLTools.SaveListToXMLElement(XMLdependecies, "depndencies");//send the the updated list to the xml
         return newId;
     }
     /// <summary>
@@ -38,13 +38,13 @@ internal class DependencyImplementation : IDependency
     /// <exception cref="DalDoesNotExistException"></exception>
     public void Delete(int id)
     {
-        XElement XMLdependecies = XMLTools.LoadListFromXMLElement("Dependencies");
+        XElement XMLdependecies = XMLTools.LoadListFromXMLElement("depndencies");
         XElement? elementToDelete = (XElement)XMLdependecies.Elements("Dependency").FirstOrDefault(d => d!.Element("Id")!.Value.Equals(id));
         
         if (elementToDelete != null)
         {
             elementToDelete.Remove();
-            XMLTools.SaveListToXMLElement(XMLdependecies, "Dependencies");//send the the updated list to the xml
+            XMLTools.SaveListToXMLElement(XMLdependecies, "depndencies");//send the the updated list to the xml
 
         }
         else
@@ -60,7 +60,7 @@ internal class DependencyImplementation : IDependency
     /// <returns>the dependency with the id</returns>
     public Dependency? Read(int id)
     {
-        XElement XMLdependecies = XMLTools.LoadListFromXMLElement("Dependencies");
+        XElement XMLdependecies = XMLTools.LoadListFromXMLElement("depndencies");
         XElement? elementToRead = (XElement)XMLdependecies.Elements("Dependency").FirstOrDefault(d => d!.Element("Id")!.Value.Equals(id));
         if (elementToRead != null)
         {
@@ -82,7 +82,7 @@ internal class DependencyImplementation : IDependency
     /// <returns>the first dependency that is true to the condition</returns>
     public Dependency? Read(Func<Dependency, bool> filter)
     {
-        XElement XMLdependecies = XMLTools.LoadListFromXMLElement("Dependencies");
+        XElement XMLdependecies = XMLTools.LoadListFromXMLElement("depndencies");
         Dependency? elementToRead = XMLdependecies?.Elements("Dependency")
         .Select(d =>
         {
@@ -109,7 +109,7 @@ internal class DependencyImplementation : IDependency
     /// <returns>a list of items that are true to the condition</returns>
     public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null)
     {
-        XElement XMLdependecies = XMLTools.LoadListFromXMLElement("Dependencies");
+        XElement XMLdependecies = XMLTools.LoadListFromXMLElement("depndencies");
 
         if (filter != null)
         {
@@ -150,7 +150,7 @@ internal class DependencyImplementation : IDependency
     /// <exception cref="DalDoesNotExistException"></exception>
     public void Update(Dependency item)
     {
-        XElement XMLdependecies = XMLTools.LoadListFromXMLElement("Dependencies");
+        XElement XMLdependecies = XMLTools.LoadListFromXMLElement("depndencies");
         XElement? elementToUpdate = (XElement)XMLdependecies.Elements("Dependency").FirstOrDefault(d => d!.Element("Id")!.Value.Equals(item.Id));
 
         if (elementToUpdate != null)
@@ -161,7 +161,7 @@ internal class DependencyImplementation : IDependency
             new XElement("DependentTask", item.DependentTask),
             new XElement("DependsOnTask", item.DependsOnTask));
             XMLdependecies.Add(updatedDependency);
-            XMLTools.SaveListToXMLElement(XMLdependecies, "Dependencies");//send the the updated list to the xml
+            XMLTools.SaveListToXMLElement(XMLdependecies, "depndencies");//send the the updated list to the xml
 
         }
         else
