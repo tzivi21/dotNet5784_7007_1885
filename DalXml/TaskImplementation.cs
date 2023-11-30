@@ -1,6 +1,5 @@
-﻿using Dal;
+﻿namespace DalXml;
 using DalApi;
-using DalXml;
 using DO;
 
 

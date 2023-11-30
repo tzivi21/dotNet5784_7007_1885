@@ -1,5 +1,5 @@
 ﻿
-namespace Dal;
+namespace DalXml;
 
 using DO;
 using System.Reflection.Metadata;

@@ -1,13 +1,14 @@
-﻿using Dal; 
+﻿namespace DalTest;
+
+using DalXml;
 using DalApi;
 using DO;
-using DalTest;
 using System.Reflection;
 
 
 class Program
 {
-    private static readonly IDal? s_dal = new DalList();
+    private static readonly IDal? s_dal = new DalXml();
 
     static void Main()
     {       
