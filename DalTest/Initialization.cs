@@ -120,9 +120,9 @@ public static class Initialization
     {
         
         s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
-        createEngineers();
-        createTasks();
-        createDependencies();
+        //createEngineers();
+        //createTasks();
+        //createDependencies();
 
         
     }

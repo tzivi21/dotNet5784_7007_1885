@@ -1,4 +1,4 @@
-﻿namespace DalXml;
+﻿namespace Dal;
 using DalApi;
 using DO;
 using System.Xml.Linq;
@@ -39,7 +39,7 @@ internal class DependencyImplementation : IDependency
     public void Delete(int id)
     {
         XElement XMLdependecies = XMLTools.LoadListFromXMLElement("depndencies");
-        XElement? elementToDelete = (XElement)XMLdependecies.Elements("Dependency").FirstOrDefault(d => d!.Element("Id")!.Value.Equals(id));
+        XElement? elementToDelete = (XElement)XMLdependecies.Elements("Dependency").FirstOrDefault(d => d!.Element("Id")!.Value.Equals(id.ToString()));
         
         if (elementToDelete != null)
         {
@@ -61,7 +61,7 @@ internal class DependencyImplementation : IDependency
     public Dependency? Read(int id)
     {
         XElement XMLdependecies = XMLTools.LoadListFromXMLElement("depndencies");
-        XElement? elementToRead = (XElement)XMLdependecies.Elements("Dependency").FirstOrDefault(d => d!.Element("Id")!.Value.Equals(id));
+        XElement? elementToRead = (XElement)XMLdependecies.Elements("Dependency").FirstOrDefault(d => d!.Element("Id")!.Value.Equals(id.ToString()));
         if (elementToRead != null)
         {
             Dependency? dependency = new Dependency();
@@ -105,7 +105,7 @@ internal class DependencyImplementation : IDependency
     /// <summary>
     /// reads all the list of dependencies /all the dependencies that are true to the condition
     /// </summary>
-    /// <param name="filter">lamda function who checks the cindition</param>
+    /// <param name="filter">lamda function who checks the condition</param>
     /// <returns>a list of items that are true to the condition</returns>
     public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null)
     {
@@ -151,12 +151,12 @@ internal class DependencyImplementation : IDependency
     public void Update(Dependency item)
     {
         XElement XMLdependecies = XMLTools.LoadListFromXMLElement("depndencies");
-        XElement? elementToUpdate = (XElement)XMLdependecies.Elements("Dependency").FirstOrDefault(d => d!.Element("Id")!.Value.Equals(item.Id));
+        XElement? elementToUpdate = (XElement)XMLdependecies.Elements("Dependency").FirstOrDefault(d => d!.Element("Id")!.Value.Equals(item.Id.ToString()));
 
         if (elementToUpdate != null)
         {
             elementToUpdate.Remove();
-            XElement updatedDependency = new("Dependency",//create a new xml elememnt
+            XElement updatedDependency = new("Dependency",//create a new xml elements
             new XElement("Id", item.Id),
             new XElement("DependentTask", item.DependentTask),
             new XElement("DependsOnTask", item.DependsOnTask));

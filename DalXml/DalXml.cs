@@ -1,8 +1,11 @@
-﻿using DalApi;
-namespace DalXml;
+﻿namespace Dal;
+using DalApi;
+
 //stage 3
-sealed public class DalXml : IDal
+sealed internal class DalXml : IDal
 {
+    public static DalXml Instance {  get; } = new DalXml();
+    private DalXml() { }
     public IDependency Dependency => new DependencyImplementation();
 
     public ITask Task =>  new TaskImplementation();

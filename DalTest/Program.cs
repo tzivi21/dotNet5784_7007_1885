@@ -1,6 +1,6 @@
 ﻿namespace DalTest;
 
-using DalXml;
+
 using DalApi;
 using DO;
 using System.Reflection;
@@ -8,7 +8,7 @@ using System.Reflection;
 
 class Program
 {
-    private static readonly IDal? s_dal = new DalXml();
+    private static readonly IDal? s_dal =  Factory.Get;
 
     static void Main()
     {       
@@ -245,7 +245,7 @@ class Program
             {
                 Console.WriteLine(task);
             }
-        }//prits the all list of tasks
+        }//prints the all list of tasks
         static void updateTask()
         {
             int id;
@@ -262,7 +262,7 @@ class Program
                 {
                 
                     object? fieldValue = field.GetValue(updatedTask);
-                    if (fieldValue == null|| DateTime.Equals(fieldValue, DateTime.MinValue)|| (string)fieldValue == "")
+                    if (fieldValue == null|| DateTime.Equals(fieldValue, DateTime.MinValue)|| fieldValue.ToString() == "")
                     {
                         field.SetValue(updatedTask, field.GetValue(task));
                     }
@@ -446,7 +446,7 @@ class Program
             {
                 //string fieldName = field.Name;
                 object? fieldValue = field.GetValue(updatedEngineer);
-                if (fieldValue == null|| (string)fieldValue =="")
+                if (fieldValue == null|| fieldValue.ToString() =="")
                 {
                     field.SetValue(updatedEngineer, field.GetValue(engineer));
                 }
@@ -571,9 +571,8 @@ class Program
 
     static void updateDependency()
     {
-        int id;
         Console.WriteLine("הכנס מספר מזהה של התלות שברצונך לעדכן:");
-        int.TryParse(Console.ReadLine(), out id);
+        int.TryParse(Console.ReadLine(), out int id);
         DO.Dependency? dependency = s_dal!.Dependency.Read(id);
         if (dependency != null)
         {
@@ -586,7 +585,7 @@ class Program
             {
                 //string fieldName = field.Name;
                 object? fieldValue = field.GetValue(updatedDependency);
-                if (fieldValue == null|| (string)fieldValue=="") {
+                if (fieldValue == null|| fieldValue.ToString()=="") {
                     field.SetValue(updatedDependency, field.GetValue(dependency));
                 }
             }

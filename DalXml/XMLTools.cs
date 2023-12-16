@@ -1,4 +1,4 @@
-﻿namespace DalXml;
+﻿namespace Dal;
 
 using DO;
 using System.Xml;
