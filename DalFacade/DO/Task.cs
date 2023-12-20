@@ -28,7 +28,7 @@ public record Task
     public bool? Milestone { set; get; } = false;
     public DateTime CreatedAt { set; get; } = DateTime.Now;
     public DateTime? Start { set; get; }
-    public DateTime? ScheduleDate { set; get; }
+    public DateTime ScheduleDate { set; get; }
     public DateTime? DeadLine { set; get; }
     public DateTime? Complete { set; get; }
     public string? Deliverables { set; get; }
@@ -57,7 +57,7 @@ public record Task
                $"Engineer ID: {Engineerid}\n" +
                $"Complexity Level: {ComplexityLevel}\n";
     }
-    public Task(string? myDescription, string? myAlias, DateTime? myForCastDate, DateTime? myStart, DateTime? myScheduleDate
+    public Task(string? myDescription, string? myAlias, DateTime? myForCastDate, DateTime? myStart, DateTime myScheduleDate
         , DateTime? myDeadLine, DateTime? myComplete, string? myDeliverables
         , string? myRemarks, int? myEngineerid, EngineerExperience? myComplexityLevel)
     {

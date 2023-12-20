@@ -1,10 +1,6 @@
 ﻿
 using BIApi;
 using BO;
-using DO;
-using System.Linq;
-using System.Numerics;
-using System.Threading.Tasks;
 
 namespace BIImplementation;
 
@@ -75,11 +71,11 @@ internal class TaskImplementation : ITask
                                                     Id = d.DependsOnTask,
                                                     Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias,
                                                     Description = _dal.Task!.Read(d.DependsOnTask)?.Description,
-                                                    Status = DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
+                                                    Status = Tools.DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
                                                 }
                                                 ).ToList();
 
-            Status status = DetermineStatus(task);
+            Status status = Tools.DetermineStatus(task);
             EngineerInTask engineer = new BO.EngineerInTask()
             {
                 Id = _dal.Engineer!.Read(task.Id)!.Id,
@@ -121,29 +117,7 @@ internal class TaskImplementation : ITask
 
 
     }
-    public Status DetermineStatus(DO.Task task)
-    {
-        if (task.Start == null && task.ScheduleDate == null && task.DeadLine == null)
-        {
-            return Status.Unscheduled;
-        }
-        else if (task.Start != null && task.ScheduleDate != null && task.DeadLine != null && task.Complete == null)
-        {
-            if (DateTime.Now < task.DeadLine)
-            {
-                return Status.OnTrack;
-            }
-            else
-            {
-                return Status.InJeopardy;
-            }
-        }
-        else
-        {
-            return Status.Scheduled;
-        }
-    }
-
+   
     public IEnumerable<BO.Task> ReadAll()
     {
         return from t in _dal.Task.ReadAll()
@@ -153,7 +127,7 @@ internal class TaskImplementation : ITask
                                     Id = d.DependsOnTask,
                                     Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias,
                                     Description = _dal.Task!.Read(d.DependsOnTask)?.Description,
-                                    Status = DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
+                                    Status = Tools.DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
                                 })
                                 .ToList()
                select new BO.Task()
@@ -162,7 +136,7 @@ internal class TaskImplementation : ITask
                    Description = t.Description,
                    Alias = t.Alias,
                    CreatedAtDate = t.CreatedAt,
-                   Status = DetermineStatus(t),
+                   Status = Tools.DetermineStatus(t),
                    Dependencies = dependencies,
                    Milestone = dependencies
                                 .Where(d => _dal.Task!.Read(d.Id)!.Milestone == true)

@@ -1,4 +1,6 @@
 ﻿
+using System.Reflection;
+
 namespace BO;
 /// <summary>
 /// Engineer Details 
@@ -11,13 +13,13 @@ namespace BO;
 /// </summary>
 public class Engineer
 {
-    public int Id { get; init; }
+    public int Id { get; set; }
     public string Name { get; set; } = "";
     public string Email { get; set; } = "";
     public DO.EngineerExperience? Level {  get; set; }
     public double Cost { get; set; } = 0;
     public TaskInEngineer? Task { get; set; }
 
-     
+    public override string ToString() => Tools.ToStringProperty(this);
 
 }

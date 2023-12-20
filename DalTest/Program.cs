@@ -12,7 +12,7 @@ class Program
 
     static void Main()
     {
-        Initialization.Do(s_dal);//initialized objects in the lists
+        Initialization.Do();//initialized objects in the lists
         mainMenu();
     }
     #region Menues

@@ -30,5 +30,5 @@ public class Milestone
     public List<TaskInList> Dependencies { get; set; } = new();
 
 
-
+    public override string ToString() => Tools.ToStringProperty(this);
 }

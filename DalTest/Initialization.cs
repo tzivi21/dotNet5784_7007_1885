@@ -91,7 +91,7 @@ public static class Initialization
             List < Engineer? > engineers_list= s_dal!.Engineer.ReadAll().ToList();//get the engineers list in order to get an id that exist
             int randomIndex = s_rand.Next(0, engineers_list.Count-1);
             Engineer randomEngineer = engineers_list[randomIndex];
-            item.Engineerid = randomEngineer.Id;
+            item.Engineerid = randomEngineer!.Id;
             EngineerExperience randomExperienceNext = (EngineerExperience)random.Next(Enum.GetValues(typeof(EngineerExperience)).Length);
             item.ComplexityLevel = randomExperienceNext;
             if (s_dal!.Task.Read(item.Id) == null)
@@ -116,15 +116,12 @@ public static class Initialization
         }
 
     }
-    public static void Do(IDal dal)
+    public static void Do()
     {
-        
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
-        //createEngineers();
-        //createTasks();
-        //createDependencies();
-
-        
+        s_dal = Factory.Get;
+        createEngineers();
+        createTasks();
+        createDependencies();
     }
 
 

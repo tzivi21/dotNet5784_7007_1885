@@ -20,7 +20,7 @@ internal class MilestoneImplementation : IMilestone
                                                     Id = d.DependsOnTask,
                                                     Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias,
                                                     Description = _dal.Task!.Read(d.DependsOnTask)?.Description,
-                                                    Status = DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
+                                                    Status = Tools.DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
                                                 }
                                                 ).ToList();
             return new BO.Milestone()
@@ -29,7 +29,7 @@ internal class MilestoneImplementation : IMilestone
                 Description = DOTask!.Description,
                 Alias = DOTask!.Alias,
                 CreatedAtDate = DOTask!.CreatedAt,
-                Status = DetermineStatus(DOTask),
+                Status = Tools.DetermineStatus(DOTask),
                 ForeCastDate = DOTask!.ForCastDate,
                 DeadlineDate = DOTask!.DeadLine,
                 CompleteDate = DOTask!.Complete,
@@ -79,7 +79,7 @@ internal class MilestoneImplementation : IMilestone
                                                     Id = d.DependsOnTask,
                                                     Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias,
                                                     Description = _dal.Task!.Read(d.DependsOnTask)?.Description,
-                                                    Status = DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
+                                                    Status = Tools.DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
                                                 }
                                                 ).ToList();
             return new BO.Milestone()
@@ -88,7 +88,7 @@ internal class MilestoneImplementation : IMilestone
                 Description = DOTask!.Description,
                 Alias = DOTask!.Alias,
                 CreatedAtDate = DOTask!.CreatedAt,
-                Status = DetermineStatus(DOTask),
+                Status = Tools.DetermineStatus(DOTask),
                 ForeCastDate = DOTask!.ForCastDate,
                 DeadlineDate = DOTask!.DeadLine,
                 CompleteDate = DOTask!.Complete,
@@ -103,26 +103,5 @@ internal class MilestoneImplementation : IMilestone
 
 
     }
-    public Status DetermineStatus(DO.Task task)
-    {
-        if (task.Start == null && task.ScheduleDate == null && task.DeadLine == null)
-        {
-            return Status.Unscheduled;
-        }
-        else if (task.Start != null && task.ScheduleDate != null && task.DeadLine != null && task.Complete == null)
-        {
-            if (DateTime.Now < task.DeadLine)
-            {
-                return Status.OnTrack;
-            }
-            else
-            {
-                return Status.InJeopardy;
-            }
-        }
-        else
-        {
-            return Status.Scheduled;
-        }
-    }
+    
 }
