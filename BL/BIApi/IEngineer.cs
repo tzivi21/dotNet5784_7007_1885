@@ -8,7 +8,7 @@ public interface IEngineer
     /// adds a new engineer
     /// </summary>
     /// <param name="item">the engineer information to add</param>
-    public void Add(BO.Engineer item);
+    public int Add(BO.Engineer item);
     /// <summary>
     /// return the information of all engineers
     /// </summary>
