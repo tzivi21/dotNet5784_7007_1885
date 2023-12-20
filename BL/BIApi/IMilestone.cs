@@ -13,5 +13,5 @@ public interface IMilestone
     /// updates a specific milestone
     /// </summary>
     /// <param name="item">the milestone with the new information to update</param>
-    public void Update(BO.Milestone item);
+    public BO.Milestone Update(BO.Milestone item);
 }

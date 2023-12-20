@@ -8,7 +8,7 @@ namespace BIImplementation;
 internal class EngineerImplementation : IEngineer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-    public int Add(Engineer item)
+    public int Add(BO.Engineer item)
     {
         if (item.Id < 0 || item.Name == "" || item.Cost < 0)
         {
@@ -84,11 +84,52 @@ internal class EngineerImplementation : IEngineer
 
     public IEnumerable<Engineer> ReadAll()
     {
-        throw new NotImplementedException();
+        return from e in _dal.Engineer.ReadAll()
+               select new BO.Engineer()
+               {
+                   Id = e.Id,
+                   Name = e.Name,
+                   Email = e.Email,
+                   Level = e.Level,
+                   Cost = 0,
+                   Task = new BO.TaskInEngineer()
+                   {
+                       Id = _dal.Task.Read(t => t.Engineerid == e.Id)!.Id,
+                       Alias = _dal.Task.Read(t => t.Engineerid == e.Id)!.Alias ?? ""
+                   }
+
+               };
     }
 
     public void Update(Engineer item)
     {
-        throw new NotImplementedException();
+        if (item.Id < 0 || item.Name == "" || item.Cost < 0)
+        {
+            throw new BO.BlNotValidValue("the value is not valid");
+        }
+
+        try
+        {
+            MailAddress mail = new MailAddress(item.Email);
+        }
+        catch (Exception e)
+        {
+            throw new BO.BlNotValidValue(e.Message);
+        }
+        try
+        {
+            DO.Engineer DOEnginner = new()
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Email = item.Email,
+                Level = item.Level,
+            };
+            _dal.Engineer.Update(DOEnginner);
+        }
+        catch(DO.DalDoesNotExistException ex)
+        {
+            throw new BO.BlDoesNotExistException($"Student with ID={item.Id} does not  exists", ex);
+        }
     }
 }

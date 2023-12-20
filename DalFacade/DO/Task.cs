@@ -24,6 +24,7 @@ public record Task
     public int Id { set; get; } = 0;
     public string? Description { set; get; } 
     public string? Alias { set; get; } 
+    public DateTime? ForCastDate { set; get; }
     public bool? Milestone { set; get; } = false;
     public DateTime CreatedAt { set; get; } = DateTime.Now;
     public DateTime? Start { set; get; }
@@ -35,7 +36,7 @@ public record Task
     public int? Engineerid { set; get; }
     public EngineerExperience? ComplexityLevel { set; get; } 
 
-    public Task():this("","", DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now,"","",0,EngineerExperience.Expert)
+    public Task():this("","", DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now,"","",0,EngineerExperience.Expert)
     {
 
     }
@@ -44,6 +45,7 @@ public record Task
         return $"Task ID: {Id}\n" +
                $"Description: {Description}\n" +
                $"Alias: {Alias}\n" +
+               $"ForCastDate: {ForCastDate}\n" +
                $"Milestone: {Milestone}\n" +
                $"Created At: {CreatedAt}\n" +
                $"Start: {Start}\n" +
@@ -55,13 +57,14 @@ public record Task
                $"Engineer ID: {Engineerid}\n" +
                $"Complexity Level: {ComplexityLevel}\n";
     }
-    public Task(string? myDescription, string? myAlias, DateTime? myStart, DateTime? myScheduleDate
+    public Task(string? myDescription, string? myAlias, DateTime? myForCastDate, DateTime? myStart, DateTime? myScheduleDate
         , DateTime? myDeadLine, DateTime? myComplete, string? myDeliverables
         , string? myRemarks, int? myEngineerid, EngineerExperience? myComplexityLevel)
     {
 
         Description = myDescription;
         Alias = myAlias;
+        ForCastDate = myForCastDate;
         Start = myStart;
         ScheduleDate = myScheduleDate;
         DeadLine = myDeadLine;

@@ -11,8 +11,8 @@
 public record Engineer
 {
     public int Id { set; get; }
-    public string Name { set; get; }  = null;
-    public string Email { set; get; } = null;
+    public string Name { set; get; }  = "";
+    public string Email { set; get; } = "";
     public EngineerExperience? Level { set; get; }
     public Engineer(int myId, string myName, string myEmail,EngineerExperience mylevel)
     {
