@@ -17,18 +17,20 @@ namespace DO;
 /// <param name="Remarks">highlights on the task</param>
 /// <param name="Engineerid">The identification number of the engineer assigned to the mission</param>
 /// <param name="ComplexityLevel">the level of complexity of the task</param>
+/// <param name="RequiredEffortTime">the time it takes to do the task</param>
 /// </summary>
 public record Task
 {
 
     public int Id { set; get; } = 0;
     public string? Description { set; get; } 
-    public string? Alias { set; get; } 
-    public DateTime? ForCastDate { set; get; }
-    public bool? Milestone { set; get; } = false;
+    public string? Alias { set; get; }
+    public TimeSpan? RequiredEffortTime { get; set; }
+
+    public bool Milestone { set; get; } = false;
     public DateTime CreatedAt { set; get; } = DateTime.Now;
     public DateTime? Start { set; get; }
-    public DateTime ScheduleDate { set; get; }
+    public DateTime? ScheduleDate { set; get; }
     public DateTime? DeadLine { set; get; }
     public DateTime? Complete { set; get; }
     public string? Deliverables { set; get; }
@@ -36,7 +38,7 @@ public record Task
     public int? Engineerid { set; get; }
     public EngineerExperience? ComplexityLevel { set; get; } 
 
-    public Task():this("","", DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now,"","",0,EngineerExperience.Expert)
+    public Task():this("","", new TimeSpan(0), DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now,"","",0,EngineerExperience.Expert)
     {
 
     }
@@ -45,7 +47,7 @@ public record Task
         return $"Task ID: {Id}\n" +
                $"Description: {Description}\n" +
                $"Alias: {Alias}\n" +
-               $"ForCastDate: {ForCastDate}\n" +
+               $"ForCastDate: {RequiredEffortTime}\n" +
                $"Milestone: {Milestone}\n" +
                $"Created At: {CreatedAt}\n" +
                $"Start: {Start}\n" +
@@ -57,14 +59,14 @@ public record Task
                $"Engineer ID: {Engineerid}\n" +
                $"Complexity Level: {ComplexityLevel}\n";
     }
-    public Task(string? myDescription, string? myAlias, DateTime? myForCastDate, DateTime? myStart, DateTime myScheduleDate
+    public Task(string? myDescription, string? myAlias, TimeSpan? RequiredEffortTime,  DateTime? myStart, DateTime? myScheduleDate
         , DateTime? myDeadLine, DateTime? myComplete, string? myDeliverables
         , string? myRemarks, int? myEngineerid, EngineerExperience? myComplexityLevel)
     {
 
         Description = myDescription;
         Alias = myAlias;
-        ForCastDate = myForCastDate;
+        //ForCastDate = myForCastDate;
         Start = myStart;
         ScheduleDate = myScheduleDate;
         DeadLine = myDeadLine;

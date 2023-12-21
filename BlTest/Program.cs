@@ -7,13 +7,14 @@ namespace BalTest;
 
 class Program
 {
-    static readonly BIApi.IBl s_bl = BIApi.Factory.Get();
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
     static void Main()
     {
         Console.Write("Would you like to create Initial data? (Y/N)");
         string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input");
         if (ans == "Y")
             DalTest.Initialization.Do();
+        mainMenu();
 
     }
     #region Menues
@@ -339,7 +340,7 @@ class Program
         else
         {
             Console.WriteLine("Invalid input for Scheduled Start Date. Defaulting to null.");
-            newTask.ScheduledStartDate = DateTime.Now;
+            newTask.ScheduledStartDate = null;
         }
 
         Console.Write("Enter Forecast Date (YYYY-MM-DD HH:MM:SS): ");
@@ -381,7 +382,7 @@ class Program
         Console.Write("Enter Remarks: ");
         newTask.Remarks = Console.ReadLine();
 
-
+        newTask.Engineer = null;
         return newTask;
     }
 
@@ -389,12 +390,14 @@ class Program
     #region EngineerActions
     static void createEngineer()
     {
-        try {
+        try
+        {
             BO.Engineer newEngineer = GetNewEngineerFromUserInput();
             if (newEngineer != null)
                 s_bl!.Engineer.Add(newEngineer);
-        }catch (Exception ex) { Console.WriteLine(ex.Message); }
-        
+        }
+        catch (Exception ex) { Console.WriteLine(ex.Message); }
+
     }//create a new engineer
 
     static void readEngineer()
@@ -439,6 +442,8 @@ class Program
 
             Console.WriteLine(engineer);
             BO.Engineer updatedEngineer = GetNewEngineerFromUserInput();
+            updatedEngineer.Id = id;
+            updatedEngineer.Task = engineer.Task;
             FieldInfo[] fields = updatedEngineer.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
             // Loop through each field
@@ -476,16 +481,7 @@ class Program
     {
         BO.Engineer newEngineer = new BO.Engineer();
 
-        Console.Write("Enter ID: ");
-        if (int.TryParse(Console.ReadLine(), out int id))
-        {
-            newEngineer.Id = id;
-        }
-        else
-        {
-            Console.WriteLine("Invalid input for ID. Defaulting to 0.");
-            newEngineer.Id = 0;
-        }
+        
 
         Console.Write("Enter Name: ");
         newEngineer.Name = Console.ReadLine() ?? "";
@@ -569,22 +565,22 @@ class Program
         }
     }
 
-        static BO.Milestone GetNewMilestoneFromUserInput()
-        {
-            BO.Milestone newMilestone = new BO.Milestone();
+    static BO.Milestone GetNewMilestoneFromUserInput()
+    {
+        BO.Milestone newMilestone = new BO.Milestone();
 
-            Console.Write("Enter Description: ");
-            newMilestone.Description = Console.ReadLine();
+        Console.Write("Enter Description: ");
+        newMilestone.Description = Console.ReadLine();
 
-            Console.Write("Enter Alias: ");
-            newMilestone.Alias = Console.ReadLine();
+        Console.Write("Enter Alias: ");
+        newMilestone.Alias = Console.ReadLine();
 
-            Console.Write("Enter Remarks: ");
-            newMilestone.Remarks = Console.ReadLine();
-            return newMilestone;
-        }
-
-
-
-        #endregion
+        Console.Write("Enter Remarks: ");
+        newMilestone.Remarks = Console.ReadLine();
+        return newMilestone;
     }
+
+
+
+    #endregion
+}

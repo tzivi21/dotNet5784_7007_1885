@@ -1,20 +1,23 @@
 ﻿
-using BIApi;
+using BlApi;
 using BO;
 using System.Net.Mail;
 
-namespace BIImplementation;
+namespace BlImplementation;
 
 internal class EngineerImplementation : IEngineer
 {
-    private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    private readonly DalApi.IDal _dal = DalApi.Factory.Get;//to access the dal methods
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();//to access the BL methods
+
     public int Add(BO.Engineer item)
     {
+        //check input
         if (item.Id < 0 || item.Name == "" || item.Cost < 0)
         {
             throw new BO.BlNotValidValue("the value is not valid");
         }
-
+        //check mail validity
         try
         {
             MailAddress mail = new MailAddress(item.Email);
@@ -38,34 +41,47 @@ internal class EngineerImplementation : IEngineer
         }
         catch (DO.DalAlreadyExistException ex)
         {
-            throw new BO.BlAlreadyExistException($"Student with ID={item.Id} already exists", ex);
+            throw new BO.BlAlreadyExistException($"engineer with ID={item.Id} already exists", ex);
         }
     }
 
     public void Delete(int id)
     {
-        if (_dal.Task.ReadAll(t => t.Engineerid == id) != null)
+        //check if the engineer is in a task 
+        if(s_bl.Engineer.Read(id)!.Task!=null)
         {
             throw new BO.BlDeletionImpossible("can't delete an engineer that is in the middle of a task/ finished task");
         }
 
         try
         {
-            _dal.Task.Delete(id);
+            _dal.Engineer.Delete(id);
         }
         catch (DO.DalDoesNotExistException ex)
         {
-            throw new BO.BlDoesNotExistException($"Student with ID={id} does not  exists", ex);
+            throw new BO.BlDoesNotExistException($"engineer with ID={id} does not  exists", ex);
         }
 
     }
 
     public Engineer? Read(int id)
     {
+        //check if the engineer existes
         DO.Engineer? DOEngineer = _dal.Engineer.Read(id);
         if( DOEngineer == null)
         {
-            throw new BO.BlDoesNotExistException($"Student with ID={id} does not  exists");
+            throw new BO.BlDoesNotExistException($"engineer with ID={id} does not  exists");
+        }
+        //search for the task that the engineer working on
+        BO.TaskInEngineer? engineerTask = new BO.TaskInEngineer()
+        {
+            Id = _dal.Task.Read(t => t.Engineerid == id)?.Id??0,
+            Alias = _dal.Task.Read(t => t.Engineerid == id)?.Alias ?? ""
+        };
+        //the engineer doesn't work on a task now
+        if (engineerTask.Id == 0 || engineerTask.Alias == "")
+        {
+            engineerTask = null;
         }
         return new BO.Engineer()
         {
@@ -74,11 +90,7 @@ internal class EngineerImplementation : IEngineer
             Email = DOEngineer.Email,
             Level = DOEngineer.Level,
             Cost = 0,
-            Task = new BO.TaskInEngineer()
-            {
-                Id = _dal.Task.Read(t => t.Engineerid == id)!.Id,
-                Alias = _dal.Task.Read(t => t.Engineerid == id)!.Alias ?? ""
-            }
+            Task = engineerTask
         };
     }
 
@@ -103,7 +115,7 @@ internal class EngineerImplementation : IEngineer
 
     public void Update(Engineer item)
     {
-        if (item.Id < 0 || item.Name == "" || item.Cost < 0)
+        if (item.Name == "" || item.Cost < 0)//check validity
         {
             throw new BO.BlNotValidValue("the value is not valid");
         }
@@ -129,7 +141,7 @@ internal class EngineerImplementation : IEngineer
         }
         catch(DO.DalDoesNotExistException ex)
         {
-            throw new BO.BlDoesNotExistException($"Student with ID={item.Id} does not  exists", ex);
+            throw new BO.BlDoesNotExistException($"engineer with ID={item.Id} does not  exists", ex);
         }
     }
 }

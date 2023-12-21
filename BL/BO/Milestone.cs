@@ -18,16 +18,16 @@ namespace BO;
 public class Milestone
 {
     public int Id { get; init; }
-    public string? Description { get; set; } = "";
-    public string? Alias { get; set; } = "";
+    public string Description { get; set; } = "";
+    public string Alias { get; set; } = "";
     public DateTime CreatedAtDate { get; set; }= DateTime.Now;
     public Status? Status { get; set; }
     public DateTime? ForeCastDate { get; set; }
     public DateTime? DeadlineDate { get; set; }
     public DateTime? CompleteDate { get; set; }
-    public double CompletionPercentage { get; set; } = 0;
-    public string Remarks { get; set; } = "";
-    public List<TaskInList> Dependencies { get; set; } = new();
+    public double? CompletionPercentage { get; set; } = 0;
+    public string? Remarks { get; set; } = "";
+    public List<TaskInList>? Dependencies { get; set; } = new();
 
 
     public override string ToString() => Tools.ToStringProperty(this);

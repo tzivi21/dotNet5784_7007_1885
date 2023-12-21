@@ -1,8 +1,8 @@
 ﻿
-using BIApi;
+using BlApi;
 using BO;
 
-namespace BIImplementation;
+namespace BlImplementation;
 
 internal class TaskImplementation : ITask
 {
@@ -13,14 +13,14 @@ internal class TaskImplementation : ITask
         DO.Task DOTask = new
             (item.Description,
             item.Alias,
-            item.ForeCastDate,
+            item.RequiredEffortTime,
             item.StartDate,
             item.ScheduledStartDate,
             item.DeadlineDate,
             item.CompleteDate,
             item.Deliverables,
             item.Remarks,
-            item.Engineer.Id,
+            item.Engineer?.Id??null,
             item.ComplexityLevel);
         try
         {
@@ -29,7 +29,7 @@ internal class TaskImplementation : ITask
         }
         catch (DO.DalAlreadyExistException ex)
         {
-            throw new BO.BlAlreadyExistException($"Student with ID={item.Id} already exists", ex);
+            throw new BO.BlAlreadyExistException($"task with ID={item.Id} already exists", ex);
         }
 
 
@@ -37,8 +37,7 @@ internal class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        if (_dal.Engineer.Read(id) != null)
-        {
+        //check that no task are dependent on this task
             if (Read(id)!.Dependencies!.Count > 0)
             {
                 throw new BO.BlDeletionImpossible($"The task with Id={id} can't be deleted");
@@ -49,9 +48,9 @@ internal class TaskImplementation : ITask
             }
             catch (DO.DalDoesNotExistException ex)
             {
-                throw new BO.BlAlreadyExistException($"Student with ID={id} already exists", ex);
+                throw new BO.BlAlreadyExistException($"task with ID={id} already exists", ex);
             }
-        }
+        
 
 
     }
@@ -59,28 +58,31 @@ internal class TaskImplementation : ITask
     public BO.Task? Read(int id)
     {
         DO.Task? task = _dal.Task.Read(id);
-        if (task == null)
-            throw new BO.BlDoesNotExistException($"Student with ID={id} does Not exist");
+        if (task == null)   
+            throw new BO.BlDoesNotExistException($"task with ID={id} does Not exist");
 
         else
         {
+            //create the list of dependencies 
             List<BO.TaskInList> dependencies = (from d in _dal.Dependency!.ReadAll(d => d.DependentTask == id)
                                                 where true
                                                 select new BO.TaskInList()
                                                 {
                                                     Id = d.DependsOnTask,
-                                                    Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias,
-                                                    Description = _dal.Task!.Read(d.DependsOnTask)?.Description,
+                                                    Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias ?? "",
+                                                    Description = _dal.Task!.Read(d.DependsOnTask)?.Description?? "",
                                                     Status = Tools.DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
                                                 }
                                                 ).ToList();
-
+            //calculates the status
             Status status = Tools.DetermineStatus(task);
+            //search and create the engineer details that works on this task
             EngineerInTask engineer = new BO.EngineerInTask()
             {
-                Id = _dal.Engineer!.Read(task.Id)!.Id,
-                Name = _dal.Engineer!.Read(task.Id)!.Name
+                Id = _dal.Engineer!.Read(task.Engineerid??0)?.Id ?? 0,
+                Name = _dal.Engineer!.Read(task.Engineerid??0)?.Name??""
             };
+            //check in the dependencies which one of them is the milestone of this task
             MilestoneInTask? milestone = dependencies
                     .Where(d => _dal.Task!.Read(d.Id)!.Milestone == true)
                     .Select(d => new BO.MilestoneInTask()
@@ -94,13 +96,15 @@ internal class TaskImplementation : ITask
                 Id = id,
                 Description = task.Description,
                 Alias = task.Alias,
+                RequiredEffortTime=task.RequiredEffortTime,
                 CreatedAtDate = task.CreatedAt,
                 Status = status,
                 Dependencies = dependencies,
                 Milestone = milestone,
                 StartDate = task.Start,
                 ScheduledStartDate = task.ScheduleDate,
-                ForeCastDate = task.ForCastDate,
+                //for cast=start time+the requiered time to finish the task
+                ForeCastDate =task.Start?.Add(task.RequiredEffortTime??new TimeSpan(0)),
                 DeadlineDate = task.DeadLine,
                 CompleteDate = task.Complete,
                 Deliverables = task.Deliverables,
@@ -125,8 +129,8 @@ internal class TaskImplementation : ITask
                                 .Select(d => new BO.TaskInList()
                                 {
                                     Id = d.DependsOnTask,
-                                    Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias,
-                                    Description = _dal.Task!.Read(d.DependsOnTask)?.Description,
+                                    Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias ?? "",
+                                    Description = _dal.Task!.Read(d.DependsOnTask)?.Description?? "",
                                     Status = Tools.DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
                                 })
                                 .ToList()
@@ -166,7 +170,7 @@ internal class TaskImplementation : ITask
     public void Update(BO.Task item)
     {
         if (_dal.Task.Read(item.Id) == null)
-            throw new BO.BlDoesNotExistException($"Student with ID={item.Id} does Not exist");
+            throw new BO.BlDoesNotExistException($"task with ID={item.Id} does Not exist");
         try
         {
             DO.Task updatedTask = new DO.Task()
@@ -174,7 +178,7 @@ internal class TaskImplementation : ITask
                 Id = item.Id,
                 Description = item.Description,
                 Alias = item.Alias,
-                ForCastDate=item.ForeCastDate,
+                RequiredEffortTime = item.RequiredEffortTime,
                 CreatedAt = item.CreatedAtDate,
                 Start = item.StartDate,
                 ScheduleDate = item.ScheduledStartDate,
@@ -189,7 +193,7 @@ internal class TaskImplementation : ITask
         }
         catch (DO.DalDoesNotExistException ex)
         {
-            throw new BO.BlDoesNotExistException($"Student with ID={item.Id} does Not exist",ex);
+            throw new BO.BlDoesNotExistException($"task with ID={item.Id} does Not exist",ex);
 
         }
     }

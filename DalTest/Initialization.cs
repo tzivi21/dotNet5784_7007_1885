@@ -73,20 +73,26 @@ public static class Initialization
             item.Alias = randomShortSentences[s_rand.Next(randomShortSentences.Length-1)];
             item.Milestone = false;
             // Define a range of days between the smallest and biggest date
-            DateTime smallestDate = DateTime.Now.AddYears(random.Next(-5,0));
-            DateTime biggestDate = DateTime.Now; //a range of three years until today
+            DateTime biggestDate = DateTime.Now.AddYears(random.Next(1,5));
+            DateTime smallestDate = DateTime.Now; //a range of three years until today
             // Generate the start date
             item.Start = smallestDate;
             // Generate the deadline date
             item.DeadLine = biggestDate;
             // Generate the scheduleDate and complete dates within the range
             item.ScheduleDate = smallestDate.AddDays(s_rand.Next((biggestDate - smallestDate).Days));
-            item.Complete = item.ScheduleDate.AddDays(s_rand.Next((biggestDate - item.ScheduleDate).Days));
+            DateTime scheduleDateValue = item.ScheduleDate.Value;
+            // Calculate the range of days between biggestDate and ScheduleDate
+            int daysDifference = (biggestDate - scheduleDateValue).Days;
+            // Generate a random number of days within the calculated range and add it to ScheduleDate
+            DateTime randomCompleteDate = scheduleDateValue.AddDays(s_rand.Next(daysDifference));
+            // Assign the randomly generated date to the item's Complete property
+            item.Complete = randomCompleteDate;
             //a random string for deliverables
             item.Deliverables = randomShortSentences[i];
             //a random string for remarks
             item.Remarks = randomShortSentences[randomShortSentences.Length-1];
-
+            item.RequiredEffortTime = TimeSpan.FromTicks(random.Next(1, 10000));
             //get the engineers list to get an random engineer id from it
             List < Engineer? > engineers_list= s_dal!.Engineer.ReadAll().ToList();//get the engineers list in order to get an id that exist
             int randomIndex = s_rand.Next(0, engineers_list.Count-1);
@@ -119,9 +125,9 @@ public static class Initialization
     public static void Do()
     {
         s_dal = Factory.Get;
-        createEngineers();
-        createTasks();
-        createDependencies();
+        //createEngineers();
+        //createTasks();
+        //createDependencies();
     }
 
 

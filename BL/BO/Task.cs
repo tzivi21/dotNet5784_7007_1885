@@ -31,14 +31,15 @@ public class Task
     public Status? Status { get; set; }
     public List<TaskInList>? Dependencies { get; set; } = new();
     public MilestoneInTask? Milestone { get; set; } = new();
+    public TimeSpan? RequiredEffortTime { get; set; }
     public DateTime? StartDate { get; set; }
-    public DateTime ScheduledStartDate { get; set; }
+    public DateTime? ScheduledStartDate { get; set; }
     public DateTime? ForeCastDate { get; set; } = DateTime.MinValue;
     public DateTime? DeadlineDate { get; set; }
     public DateTime? CompleteDate { get; set; }
     public string? Deliverables { get; set; } = "";
     public string? Remarks { get; set; } = "";
-    public EngineerInTask Engineer { get; set; }= new();
+    public EngineerInTask? Engineer { get; set; }= new();
     public DO.EngineerExperience? ComplexityLevel {  get; set; }
     public override string ToString() => Tools.ToStringProperty(this);
 

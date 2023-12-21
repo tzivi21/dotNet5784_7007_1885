@@ -294,12 +294,12 @@ class Program
         Console.Write("Alias: ");
         string? alias = Console.ReadLine();
         Console.Write("for cast date (yyyy-MM-dd HH:mm:ss): ");
-        DateTime ForCastDate = DateTime.MinValue;
-        DateTime.TryParse(Console.ReadLine(), out ForCastDate);
+        TimeSpan RequiredEffortTime = new TimeSpan(0);
+        TimeSpan.TryParse(Console.ReadLine(), out RequiredEffortTime);
 
         Console.Write("Milestone (true/false): ");
         bool milestone1;
-        bool? milestone = null;
+        bool milestone=false;
         if (bool.TryParse(Console.ReadLine(), out milestone1))
         {
             milestone = milestone1;
@@ -385,7 +385,7 @@ class Program
         {
             Description = description,
             Alias = alias,
-            ForCastDate= ForCastDate,
+            RequiredEffortTime = RequiredEffortTime,
             Milestone = milestone,
             Start = start,
             ScheduleDate = scheduleDate,

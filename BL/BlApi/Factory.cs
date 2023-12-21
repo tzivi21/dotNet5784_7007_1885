@@ -1,8 +1,8 @@
 ﻿using System.Xml;
 
-namespace BIApi;
+namespace BlApi;
 
 public static class Factory
 {
-    public static IBl Get() => new BIImplementation.Bl();
+    public static IBl Get() => new BlImplementation.Bl();
 }
