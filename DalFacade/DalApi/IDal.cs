@@ -6,5 +6,8 @@ public interface IDal
     ITask Task { get; }
     IEngineer Engineer { get; }
 
+    public DateTime? StartProjectDate { get;}
+    public DateTime? EndProjectDate { get; }
+
 
 }

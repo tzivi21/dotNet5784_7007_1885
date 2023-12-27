@@ -8,6 +8,13 @@ namespace Dal;
 internal class EngineerImplementation : IEngineer
 {
     /// <summary>
+    /// resets the file of engineers in xml
+    /// </summary>
+    public void Reset()
+    {
+        XMLTools.ResetFile("Engineers", "ArrayOfEngineer");
+    }
+    /// <summary>
     /// create a new engineer entity
     /// </summary>
     /// <param name="item">enginner to add</param>

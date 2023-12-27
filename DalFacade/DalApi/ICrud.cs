@@ -11,4 +11,5 @@ public interface ICrud<T> where T : class
     void Update(T item); //Updates entity object
     void Delete(int id); //Deletes an object by its Id
     T? Read(Func<T, bool> filter);//gets a condition and returns the object that Upholds the condition from the list 
+    void Reset();
 }

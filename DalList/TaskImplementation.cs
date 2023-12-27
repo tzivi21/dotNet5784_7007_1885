@@ -7,6 +7,13 @@ using DO;
 internal class TaskImplementation : ITask
 {
     /// <summary>
+    /// resets the list of tasks
+    /// </summary>
+    public void Reset()
+    {
+        DataSource.Tasks.Clear();
+    }
+    /// <summary>
     /// create a new task entity
     /// </summary>
     /// <param name="item">task to add</param>

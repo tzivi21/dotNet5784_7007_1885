@@ -35,4 +35,8 @@ public class BlNotValidValue : Exception
 {
     public BlNotValidValue(string? message) : base(message) { }
 }
+public class BlPlanningOfProjectTimesException: Exception
+{
+    public BlPlanningOfProjectTimesException(string? message) : base(message) { }
+}
 

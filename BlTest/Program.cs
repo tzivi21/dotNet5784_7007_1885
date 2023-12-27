@@ -167,21 +167,24 @@ class Program
             Console.WriteLine("Menu:");
             Console.WriteLine("1. Read Milestone");
             Console.WriteLine("2. Update Milestone");
-            Console.WriteLine("3. Exit");
+            Console.WriteLine("3. Create Project Timeline");
+            Console.WriteLine("4. Exit");
 
             Console.Write("Enter your choice: ");
             string? choice = Console.ReadLine();
 
             switch (choice)
             {
-                //לוהיסף אפשרות ללוז הפרויקט
                 case "1":
-
+                    ReadMilestone();
                     break;
                 case "2":
-
+                    UpdateMilestone();
                     break;
                 case "3":
+                    s_bl.Milestone.CreateProjectTimeLine(); // Call to CreateProjectTimeLine function
+                    break;
+                case "4":
                     exitRequested = true;
                     Console.WriteLine("Exiting...");
                     break;
@@ -190,7 +193,10 @@ class Program
                     break;
             }
         }
-    }//Manages the milestone menu
+    }
+
+    
+
     #endregion
     #region TaskActions
     static void createTask()

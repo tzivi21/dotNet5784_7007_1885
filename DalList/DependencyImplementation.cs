@@ -1,9 +1,18 @@
 ﻿namespace Dal;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using DalApi;
 using DO;
 internal class DependencyImplementation : IDependency
 {
+    /// <summary>
+    /// resets the list of tasks
+    /// </summary>
+    public void Reset()
+    {
+        DataSource.Dependencies.Clear();
+    }
+
     /// <summary>
     /// create a new dependency entity
     /// </summary>
@@ -15,7 +24,7 @@ internal class DependencyImplementation : IDependency
         int newId = DataSource.Config.NextDependencyId;//create a new running number
         Dependency newItem = new Dependency();
         newItem = item;
-        newItem.Id= newId;
+        newItem.Id = newId;
         DataSource.Dependencies.Add(newItem);
         return newId;
 
@@ -28,7 +37,7 @@ internal class DependencyImplementation : IDependency
     public void Delete(int id)
     {
         //checks if the dependency is in the list
-  
+
         Dependency? objectToDelete = DataSource.Dependencies.FirstOrDefault(obj => obj.Id == id);
         if (objectToDelete != null)
         {
@@ -65,7 +74,8 @@ internal class DependencyImplementation : IDependency
     /// </summary>
     /// <param name="filter">lamda function who checks the cindition</param>
     /// <returns>a list of items that are true to the condition</returns>
-    public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null) {
+    public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null)
+    {
         if (filter != null)
         {
             return from d in DataSource.Dependencies

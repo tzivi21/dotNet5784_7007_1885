@@ -10,6 +10,13 @@ using DO;
 internal class EngineerImplementation : IEngineer
 {
     /// <summary>
+    /// resets the list of tasks
+    /// </summary>
+    public void Reset()
+    {
+        DataSource.Engineers.Clear();
+    }
+    /// <summary>
     /// create a new engineer entity
     /// </summary>
     /// <param name="item">enginner to add</param>

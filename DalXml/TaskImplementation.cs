@@ -6,6 +6,13 @@ using DO;
 public class TaskImplementation : ITask
 {
     /// <summary>
+    /// resets the file of tasks in xml
+    /// </summary>
+    public void Reset()
+    {
+        XMLTools.ResetFile("Tasks", "ArrayOfTask");
+    }
+    /// <summary>
     /// create a new task entity
     /// </summary>
     /// <param name="item">task to add</param>

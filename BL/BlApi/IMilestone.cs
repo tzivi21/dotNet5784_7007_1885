@@ -14,4 +14,8 @@ public interface IMilestone
     /// </summary>
     /// <param name="item">the milestone with the new information to update</param>
     public BO.Milestone Update(BO.Milestone item);
+    /// <summary>
+    /// create a time line to the project and create the milestones
+    /// </summary>
+    public void CreateProjectTimeLine();
 }

@@ -11,4 +11,19 @@ sealed internal class DalXml : IDal
     public ITask Task =>  new TaskImplementation();
 
     public IEngineer Engineer =>  new EngineerImplementation();
+    public void Reset()
+    {
+        XMLTools.ResetFile("Engineers", "ArrayOfEngineer");
+        XMLTools.ResetFile("Tasks", "ArrayOfTask");
+        XMLTools.ResetFile("depndencies", "ArrayOfDependencies");
+    }
+    public DateTime? EndProjectDate
+    {
+        get => XMLTools.GetDates("data-config", "EndProjectDate");
+
+    }
+    public DateTime? StartProjectDate
+    {
+        get => XMLTools.GetDates("data-config", "StartProjectDate");
+    }
 }

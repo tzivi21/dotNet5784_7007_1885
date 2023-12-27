@@ -8,5 +8,12 @@ sealed internal class DalList : IDal
     public ITask Task =>  new TaskImplementation();
 
     public IEngineer Engineer =>  new EngineerImplementation();
-    private DalList() { }   
+    public DateTime? EndProjectDate
+    {
+        get => DataSource.Config.endProjectDate;
+    }
+    public DateTime? StartProjectDate
+    {
+        get => DataSource.Config.startProjectDate;
+    }
 }

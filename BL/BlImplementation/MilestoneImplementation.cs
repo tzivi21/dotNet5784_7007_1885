@@ -7,6 +7,42 @@ namespace BlImplementation;
 internal class MilestoneImplementation : IMilestone
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    public void CreateProjectTimeLine()
+    {
+        //resetting all the dependencies in the project and create new once
+        List<DO.Dependency?> dependenciesList = _dal.Dependency.ReadAll().ToList();
+        //List<DO.Dependency> newDepList = Tools.CreateMileStone(dependenciesList);
+        //_dal.Dependency.Reset();
+        //foreach (var dependency in newDepList)
+        //{
+        //    _dal.Dependency.Create(dependency);
+
+
+        //}
+        List<DO.Task?> allTasks = _dal.Task.ReadAll().ToList();
+        int idOfStartMilestone = allTasks.Where(task => task!.Alias == "M0").Select(task => task!.Id).First();
+        DO.Task? startMilestoneData = _dal.Task.Read(idOfStartMilestone);
+        if (startMilestoneData is not null)
+        {
+            startMilestoneData.ScheduleDate = _dal.StartProjectDate;
+            _dal.Task.Update(startMilestoneData);
+        }
+        int idOfEndMilestone = allTasks.Where(task => task!.Description == "MEnd").Select(task => task!.Id).First();
+        DO.Task? EndMilestoneData = _dal.Task.Read(idOfEndMilestone);
+        if (EndMilestoneData is not null)
+        {
+            EndMilestoneData.ScheduleDate = _dal.EndProjectDate;
+            _dal.Task.Update(EndMilestoneData);
+
+        }
+
+
+        //Tools.updateDeadLineDate(idOfEndMilestone, idOfStartMilestone, dependenciesList);
+        //Tools.updateScheduledDate(idOfStartMilestone, idOfEndMilestone, dependenciesList);
+
+        Tools.renameMilestonesAlias(dependenciesList);
+
+    }
     public Milestone? Read(int id)
     {
         try
@@ -19,16 +55,16 @@ internal class MilestoneImplementation : IMilestone
                                                 select new BO.TaskInList()
                                                 {
                                                     Id = d.DependsOnTask,
-                                                    Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias??"",
-                                                    Description = _dal.Task!.Read(d.DependsOnTask)?.Description??"",
+                                                    Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias ?? "",
+                                                    Description = _dal.Task!.Read(d.DependsOnTask)?.Description ?? "",
                                                     Status = Tools.DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
                                                 }
                                                 ).ToList();
             return new BO.Milestone()
             {
                 Id = id,
-                Description = DOTask!.Description??"",
-                Alias = DOTask!.Alias?? "",
+                Description = DOTask!.Description ?? "",
+                Alias = DOTask!.Alias ?? "",
                 CreatedAtDate = DOTask!.CreatedAt,
                 //calculates the status
                 Status = Tools.DetermineStatus(DOTask),
@@ -71,7 +107,7 @@ internal class MilestoneImplementation : IMilestone
             Remarks = item.Remarks,
             Engineerid = prevTask.Engineerid,
             ComplexityLevel = prevTask.ComplexityLevel
-            
+
         };
         try
         {
@@ -83,11 +119,11 @@ internal class MilestoneImplementation : IMilestone
                                                 select new BO.TaskInList()
                                                 {
                                                     Id = d.DependsOnTask,
-                                                    Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias?? "",
-                                                    Description = _dal.Task!.Read(d.DependsOnTask)?.Description??"",
+                                                    Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias ?? "",
+                                                    Description = _dal.Task!.Read(d.DependsOnTask)?.Description ?? "",
                                                     Status = Tools.DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
                                                 }
-            
+
                                                 ).ToList();
             //return the updated milestone
             return new BO.Milestone()

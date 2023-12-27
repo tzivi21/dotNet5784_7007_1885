@@ -25,7 +25,7 @@ public record Task
     public int Id { set; get; } = 0;
     public string? Description { set; get; } 
     public string? Alias { set; get; }
-    public TimeSpan? RequiredEffortTime { get; set; }
+    public TimeSpan? RequiredEffortTime { get; set; }= TimeSpan.FromDays(20);
 
     public bool Milestone { set; get; } = false;
     public DateTime CreatedAt { set; get; } = DateTime.Now;

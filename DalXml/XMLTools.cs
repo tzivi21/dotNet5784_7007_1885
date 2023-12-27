@@ -1,6 +1,7 @@
 ﻿namespace Dal;
 
 using DO;
+using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -13,6 +14,7 @@ static class XMLTools
         if (!Directory.Exists(s_xml_dir))
             Directory.CreateDirectory(s_xml_dir);
     }
+
 
     #region Extension Fuctions
     public static T? ToEnumNullable<T>(this XElement element, string name) where T : struct, Enum =>
@@ -38,10 +40,64 @@ static class XMLTools
         XMLTools.SaveListToXMLElement(root, data_config_xml);
         return nextId;
     }
+    public static DateTime GetDates(string data_config_xml, string elemName)
+    {
+        XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);
+
+        // Get the date string from the XML element
+        string? dateString = root.Element(elemName)?.Value;
+
+        if (!string.IsNullOrEmpty(dateString))
+        {
+            // Define the date format expected in the XML
+            string format = "yyyy-MM-ddTHH:mm:ss";
+
+            // Convert the string to DateTime using ParseExact or TryParseExact
+            if (DateTime.TryParseExact(dateString, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime nextDate))
+            {
+                
+                return nextDate; // Return the previous date
+            }
+            else
+            {
+                throw new FormatException($"Can't convert date. {data_config_xml}, {elemName}");
+            }
+        }
+        else
+        {
+            throw new FormatException($"Date string is null or empty. {data_config_xml}, {elemName}");
+        }
+    }
+    //public static void SetDates(string data_config_xml, string elemName, DateTime newDate)
+    //{
+    //    XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);
+
+    //    // Set the new DateTime value to the XML element
+    //    root.Element(elemName)?.SetValue(newDate.ToString("yyyy-MM-ddTHH:mm:ss")); // Adjust the date format as needed
+
+    //    // Save the updated XML back to the file
+    //    XMLTools.SaveListToXMLElement(root, data_config_xml);
+    //}
 
     #endregion
 
     #region SaveLoadWithXElement
+    public static void ResetFile(string entity,string root)
+    {
+        string filePath = $"{s_xml_dir + entity}.xml";
+        try
+        {
+            XDocument emptyXml = new XDocument(new XElement(root));
+
+            // Save the empty XML structure to the file, overwriting the existing content
+            emptyXml.Save(filePath);
+      
+        }
+        catch (Exception ex)
+        {
+            throw new DalXMLFileLoadCreateException($"fail to reset xml file: {filePath}, {ex.Message}");
+        }
+    }
     public static void SaveListToXMLElement(XElement rootElem, string entity)
     {
         string filePath = $"{s_xml_dir}{entity}.xml";
@@ -101,8 +157,7 @@ static class XMLTools
             using FileStream file = new(filePath, FileMode.Open);
             XmlSerializer x = new(typeof(List<T>));
             return x.Deserialize(file) as List<T> ?? new();
-            //XmlSerializer x = new(typeof(List<T?>));
-            //return x.Deserialize(file) as List<T?> ?? new();
+            
 
         }
         catch (Exception ex)

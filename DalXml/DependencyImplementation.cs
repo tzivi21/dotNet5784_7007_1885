@@ -7,6 +7,13 @@ using System.Xml.Linq;
 internal class DependencyImplementation : IDependency
 {
     /// <summary>
+    /// resets the file of dependencies in xml
+    /// </summary>
+    public void Reset()
+    {
+        XMLTools.ResetFile("depndencies", "ArrayOfDependencies");
+    }
+    /// <summary>
     /// create a new dependency entity
     /// </summary>
     /// <param name="item">dependency to add</param>
