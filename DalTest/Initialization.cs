@@ -45,88 +45,176 @@ public static class Initialization
     }
     private static void createTasks()//initialize the task's list with random values
     {
-        //an array of random strings to play with them
-        string[] randomShortSentences = new string[]
-        {
-            "Hello!","Good morning.","How are you?","I am fine.","Nice to meet you.","Thank you.","You're welcome.","Please wait.",
-            "Let's go.","Have a nice day.","I love you.","See you later.","It's a cat.","This is a dog.","I am here.",
-            "Where are you?","What's up?","Open the door.","Close the window.","Go away.","Come back.","hello people","i love choclate",
-            "No problem.","Great job!", "That's cool.", "Yes, please.", "No, thanks.","What's your name?","My name is John.",
-            "Call me tomorrow.","This is easy.","I don't know.","I'm sorry.","Let's eat.","Time to go.","Read a book.",
-            "Write a letter.","Speak slowly.", "Listen carefully.", "Watch TV.","Turn it on.","Turn it off.","Look at this.",
-            "That's mine.","I'm coming.", "Wait a moment.", "Take a break.", "Don't worry.","Happy birthday.","Good night.",
-            "Hello!","Good morning.","How are you?","I am fine.","Nice to meet you.","Thank you.","You're welcome.","Please wait.",
-            "Let's go.","Have a nice day.","I love you.","See you later.","It's a cat.","This is a dog.","I am here.","Where are you?",
-            "What's up?","Open the door.", "Close the window.","Go away.","Come back.","No problem.","Great job!","That's cool.",
-            "Yes, please.", "No, thanks.", "What's your name?", "My name is John.","Call me tomorrow.","This is easy.","I don't know.",
-            "I'm sorry.","Let's eat.","Time to go.", "Read a book.", "Write a letter.","Speak slowly.","Listen carefully.","Watch TV.",
-            "Turn it on.","Turn it off.", "Look at this.","That's mine.","I'm coming.", "Wait a moment.", "Take a break.", "Don't worry.", "Happy birthday.", "Good night."
-        };
-        Random random = new Random();
-        for (int i = 0; i < randomShortSentences.Length; i++)
-        {
-            Task item =new Task();
-            //create a random sentence from two of the short sentences above
-       
-            item.Description = randomShortSentences[s_rand.Next(randomShortSentences.Length-1)] + randomShortSentences[s_rand.Next(randomShortSentences.Length-1)];
-            //create a random alias by randomly picking a sentence from the array above
-            item.Alias = randomShortSentences[s_rand.Next(randomShortSentences.Length-1)];
-            item.Milestone = false;
-            // Define a range of days between the smallest and biggest date
-            DateTime biggestDate = DateTime.Now.AddYears(random.Next(1,5));
-            DateTime smallestDate = DateTime.Now; //a range of three years until today
-            // Generate the start date
-            item.Start = smallestDate;
-            // Generate the deadline date
-            item.DeadLine = biggestDate;
-            // Generate the scheduleDate and complete dates within the range
-            item.ScheduleDate = smallestDate.AddDays(s_rand.Next((biggestDate - smallestDate).Days));
-            DateTime scheduleDateValue = item.ScheduleDate.Value;
-            // Calculate the range of days between biggestDate and ScheduleDate
-            int daysDifference = (biggestDate - scheduleDateValue).Days;
-            // Generate a random number of days within the calculated range and add it to ScheduleDate
-            DateTime randomCompleteDate = scheduleDateValue.AddDays(s_rand.Next(daysDifference));
-            // Assign the randomly generated date to the item's Complete property
-            item.Complete = randomCompleteDate;
-            //a random string for deliverables
-            item.Deliverables = randomShortSentences[i];
-            //a random string for remarks
-            item.Remarks = randomShortSentences[randomShortSentences.Length-1];
-            item.RequiredEffortTime = TimeSpan.FromTicks(random.Next(1, 10000));
-            //get the engineers list to get an random engineer id from it
-            List < Engineer? > engineers_list= s_dal!.Engineer.ReadAll().ToList();//get the engineers list in order to get an id that exist
-            int randomIndex = s_rand.Next(0, engineers_list.Count-1);
-            Engineer randomEngineer = engineers_list[randomIndex];
-            item.Engineerid = randomEngineer!.Id;
-            EngineerExperience randomExperienceNext = (EngineerExperience)random.Next(Enum.GetValues(typeof(EngineerExperience)).Length);
-            item.ComplexityLevel = randomExperienceNext;
-            if (s_dal!.Task.Read(item.Id) == null)
-                s_dal!.Task!.Create(item);//add the item to the list
-            else
-                throw new Exception($"אובייקט מסוג Person עם ID {item.Id} כבר קיים");
-        }
+        #region full initialization
+        ////an array of random strings to play with them
+        //string[] randomShortSentences = new string[]
+        //{
+        //    "Hello!","Good morning.","How are you?","I am fine.","Nice to meet you.","Thank you.","You're welcome.","Please wait.",
+        //    "Let's go.","Have a nice day.","I love you.","See you later.","It's a cat.","This is a dog.","I am here.",
+        //    "Where are you?","What's up?","Open the door.","Close the window.","Go away.","Come back.","hello people","i love choclate",
+        //    "No problem.","Great job!", "That's cool.", "Yes, please.", "No, thanks.","What's your name?","My name is John.",
+        //    "Call me tomorrow.","This is easy.","I don't know.","I'm sorry.","Let's eat.","Time to go.","Read a book.",
+        //    "Write a letter.","Speak slowly.", "Listen carefully.", "Watch TV.","Turn it on.","Turn it off.","Look at this.",
+        //    "That's mine.","I'm coming.", "Wait a moment.", "Take a break.", "Don't worry.","Happy birthday.","Good night.",
+        //    "Hello!","Good morning.","How are you?","I am fine.","Nice to meet you.","Thank you.","You're welcome.","Please wait.",
+        //    "Let's go.","Have a nice day.","I love you.","See you later.","It's a cat.","This is a dog.","I am here.","Where are you?",
+        //    "What's up?","Open the door.", "Close the window.","Go away.","Come back.","No problem.","Great job!","That's cool.",
+        //    "Yes, please.", "No, thanks.", "What's your name?", "My name is John.","Call me tomorrow.","This is easy.","I don't know.",
+        //    "I'm sorry.","Let's eat.","Time to go.", "Read a book.", "Write a letter.","Speak slowly.","Listen carefully.","Watch TV.",
+        //    "Turn it on.","Turn it off.", "Look at this.","That's mine.","I'm coming.", "Wait a moment.", "Take a break.", "Don't worry.", "Happy birthday.", "Good night."
+        //};
+        //Random random = new Random();
+        //for (int i = 0; i < randomShortSentences.Length; i++)
+        //{
+        //    Task item =new Task();
+        //    //create a random sentence from two of the short sentences above
 
+        //    item.Description = randomShortSentences[s_rand.Next(randomShortSentences.Length-1)] + randomShortSentences[s_rand.Next(randomShortSentences.Length-1)];
+        //    //create a random alias by randomly picking a sentence from the array above
+        //    item.Alias = randomShortSentences[s_rand.Next(randomShortSentences.Length-1)];
+        //    item.Milestone = false;
+        //    DateTime biggestDate = (DateTime)s_dal.EndProjectDate;
+        //    DateTime smallestDate = (DateTime)s_dal.StartProjectDate;
+
+        //    // Ensure biggestDate is after smallestDate, if not, swap them
+        //    if (biggestDate < smallestDate)
+        //    {
+        //        DateTime temp = biggestDate;
+        //        biggestDate = smallestDate;
+        //        smallestDate = temp;
+        //    }
+
+        //    // Generate the start date
+        //    item.Start = smallestDate.AddDays(s_rand.Next((biggestDate - smallestDate).Days));
+
+        //    // Generate the scheduleDate and complete dates within the range
+        //    item.ScheduleDate = smallestDate.AddDays(s_rand.Next((biggestDate - smallestDate).Days));
+
+        //    // Generate the deadline date ensuring it's after the schedule date
+        //    TimeSpan timeSpan = biggestDate -(DateTime) item.ScheduleDate;
+        //    int maxDays = timeSpan.Days;
+
+        //    // Ensure the range for random days accommodates the possibility of a deadline after the schedule date
+        //    int minDays = ((DateTime)item.ScheduleDate - smallestDate).Days;
+        //    if (minDays >= maxDays)
+        //    {
+        //        // Handle the case where minDays is greater than maxDays
+        //        int temp = minDays; // Store minDays temporarily
+        //        minDays = maxDays; // Swap minDays and maxDays
+        //        maxDays = temp; // Assign maxDays with the original minDays value
+        //    }
+        //        int randomDays = s_rand.Next(minDays, maxDays + 1);
+        //    DateTime scheduled=(DateTime)item.ScheduleDate;
+        //    // Add the random number of days to scheduleDate to get the deadline
+        //    item.DeadLine = scheduled.AddDays(randomDays);
+
+        //    item.ScheduleDate = smallestDate.AddDays(s_rand.Next((biggestDate - smallestDate).Days));
+        //    DateTime scheduleDateValue = item.ScheduleDate.Value;
+        //    // Calculate the range of days between biggestDate and ScheduleDate
+        //    int daysDifference = (biggestDate - scheduleDateValue).Days;
+        //    // Generate a random number of days within the calculated range and add it to ScheduleDate
+        //    DateTime randomCompleteDate = scheduleDateValue.AddDays(s_rand.Next(daysDifference));
+        //    // Assign the randomly generated date to the item's Complete property
+        //    item.Complete = randomCompleteDate;
+        //    //a random string for deliverables
+        //    item.Deliverables = randomShortSentences[i];
+        //    //a random string for remarks
+        //    item.Remarks = randomShortSentences[randomShortSentences.Length-1];
+        //    item.RequiredEffortTime = TimeSpan.FromTicks(random.Next(1, 10000));
+        //    //get the engineers list to get an random engineer id from it
+        //    List < Engineer? > engineers_list= s_dal!.Engineer.ReadAll().ToList();//get the engineers list in order to get an id that exist
+        //    int randomIndex = s_rand.Next(0, engineers_list.Count-1);
+        //    Engineer randomEngineer = engineers_list[randomIndex];
+        //    item.Engineerid = randomEngineer!.Id;
+        //    EngineerExperience randomExperienceNext = (EngineerExperience)random.Next(Enum.GetValues(typeof(EngineerExperience)).Length);
+        //    item.ComplexityLevel = randomExperienceNext;
+        //    if (s_dal!.Task.Read(item.Id) == null)
+        //        s_dal!.Task!.Create(item);//add the item to the list
+        //    else
+        //        throw new Exception($"אובייקט מסוג Person עם ID {item.Id} כבר קיים");
+        //}
+        #endregion
+        #region temperary initialization
+        //בשביל לשלוט ביצירת האבני דרך והזמנים יצרנו כמה משימות בודדות לפי נתוני המשימות שניתנו בתיאור של האלגוריתם ליצירת אבני דרך בתיאור הכללי של הפרויקט
+        s_dal!.Task.Create(new Task()
+        {
+           
+            Description = "task1",
+            Alias = "1",
+            Milestone = false,
+            CreatedAt = DateTime.Now,
+            RequiredEffortTime = new TimeSpan(2, 0, 0, 0)
+        });
+
+        s_dal!.Task.Create(new Task()
+        {
+            
+            Description = "task2",
+            Alias = "2",
+            Milestone = false,
+            CreatedAt = DateTime.Now,
+            RequiredEffortTime = new TimeSpan(3, 0, 0, 0)
+        });
+
+        s_dal!.Task.Create(new Task()
+        {
+            
+            Description = "task3",
+            Alias = "3",
+            Milestone = false,
+            CreatedAt = DateTime.Now,
+            RequiredEffortTime = new TimeSpan(3, 0, 0, 0)
+        });
+
+        s_dal!.Task.Create(new Task()
+        {
+            Id = 0,
+            Description = "task4",
+            Alias = "4",
+            Milestone = false,
+            CreatedAt = DateTime.Now,
+            RequiredEffortTime = new TimeSpan(2, 0, 0, 0)
+        });
+
+        s_dal!.Task.Create(new Task()
+        {
+            
+            Description = "task5",
+            Alias = "5",
+            Milestone = false,
+            CreatedAt = DateTime.Now,
+            RequiredEffortTime = new TimeSpan(1, 0, 0, 0)
+        });
+        #endregion
     }
 
     private static void createDependencies()//initialize the dependency's list with random values
     {
-        for(int i = 0; i < 250; i++) 
-        {
-            Dependency item= new Dependency();
-            List<Task?> tasks_list = s_dal!.Task.ReadAll().ToList();//get the tasks list in order to get a random task id's that exists 
-            int randomIndex1 = s_rand.Next(0, tasks_list.Count-1);
-            int randomIndex2 = s_rand.Next(0, tasks_list.Count - 1);
-            item.DependentTask = tasks_list[randomIndex1].Id;
-            item.DependsOnTask = tasks_list[randomIndex2].Id;
-            s_dal!.Dependency.Create(item);
-        }
-
+        #region full initialization
+        //for(int i = 0; i < 250; i++) 
+        //{
+        //    Dependency item= new Dependency();
+        //    List<Task?> tasks_list = s_dal!.Task.ReadAll().ToList();//get the tasks list in order to get a random task id's that exists 
+        //    int randomIndex1 = s_rand.Next(0, tasks_list.Count-1);
+        //    int randomIndex2 = s_rand.Next(0, tasks_list.Count - 1);
+        //    item.DependentTask = tasks_list[randomIndex1].Id;
+        //    item.DependsOnTask = tasks_list[randomIndex2].Id;
+        //    s_dal!.Dependency.Create(item);
+        //}
+        #endregion
+        #region temporary initialization
+        //גם בתלויות יצרנו תלויות ספציפיות כדי לעקוב אחרי האלגוריתם של לוז הפרויקט
+        s_dal!.Dependency.Create(new Dependency(3, 1));
+        s_dal!.Dependency.Create(new Dependency(3, 2));
+        s_dal!.Dependency.Create(new Dependency(4, 3));
+        s_dal!.Dependency.Create(new Dependency(5, 3));
+        #endregion
     }
     public static void Do()
     {
         s_dal = Factory.Get;
         //createEngineers();
-        //createTasks();
+        createTasks();
         createDependencies();
     }
 

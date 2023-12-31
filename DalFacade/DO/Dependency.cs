@@ -15,7 +15,7 @@ public record Dependency
     public Dependency(int myDependentTask, int myDependsOnTask)
     {
         DependentTask = myDependentTask;
-        DependentTask = myDependsOnTask;
+        DependsOnTask = myDependsOnTask;
     }
     public Dependency():this(0,0)
     {

@@ -1,7 +1,4 @@
-﻿
-using System.Runtime.CompilerServices;
-
-namespace DO;
+﻿namespace DO;
 /// <summary>
 /// managing Task class with all the task properties
 /// <param name="id">the identifier number of the task</param>
@@ -38,7 +35,7 @@ public record Task
     public int? Engineerid { set; get; }
     public EngineerExperience? ComplexityLevel { set; get; } 
 
-    public Task():this("","", new TimeSpan(0), DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now,"","",0,EngineerExperience.Expert)
+    public Task():this("","", new TimeSpan(0), null, null, null, null,"","",0,EngineerExperience.Novice)
     {
 
     }
@@ -59,14 +56,14 @@ public record Task
                $"Engineer ID: {Engineerid}\n" +
                $"Complexity Level: {ComplexityLevel}\n";
     }
-    public Task(string? myDescription, string? myAlias, TimeSpan? RequiredEffortTime,  DateTime? myStart, DateTime? myScheduleDate
+    public Task(string? myDescription, string? myAlias, TimeSpan? myRequiredEffortTime,  DateTime? myStart, DateTime? myScheduleDate
         , DateTime? myDeadLine, DateTime? myComplete, string? myDeliverables
         , string? myRemarks, int? myEngineerid, EngineerExperience? myComplexityLevel)
     {
 
         Description = myDescription;
         Alias = myAlias;
-        //ForCastDate = myForCastDate;
+        RequiredEffortTime = myRequiredEffortTime;
         Start = myStart;
         ScheduleDate = myScheduleDate;
         DeadLine = myDeadLine;

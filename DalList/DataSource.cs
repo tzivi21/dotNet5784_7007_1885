@@ -1,4 +1,6 @@
-﻿namespace Dal;
+﻿using System.Globalization;
+
+namespace Dal;
 
 public static class DataSource
 {
@@ -13,8 +15,8 @@ public static class DataSource
         internal const int startDependencyId = 250;
         private static int nextDependencyId = startDependencyId;
         internal static int NextDependencyId { get { return nextDependencyId++; } }
-        internal static DateTime? startProjectDate = null;
-        internal static DateTime? endProjectDate = null;
-
+        internal static DateTime startProjectDate = DateTime.ParseExact("2020 - 01 - 01T12:00:00", "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+        internal static DateTime endProjectDate = DateTime.ParseExact("2028 - 01 - 01T12:00:00", "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+       
     }
 }

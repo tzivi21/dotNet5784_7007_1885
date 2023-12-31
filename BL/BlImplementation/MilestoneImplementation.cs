@@ -7,20 +7,24 @@ namespace BlImplementation;
 internal class MilestoneImplementation : IMilestone
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    /// <summary>
+    /// create the project time line:milestones and set dates
+    /// </summary>
     public void CreateProjectTimeLine()
     {
         //resetting all the dependencies in the project and create new once
         List<DO.Dependency?> dependenciesList = _dal.Dependency.ReadAll().ToList();
-        //List<DO.Dependency> newDepList = Tools.CreateMileStone(dependenciesList);
-        //_dal.Dependency.Reset();
-        //foreach (var dependency in newDepList)
-        //{
-        //    _dal.Dependency.Create(dependency);
+        List<DO.Dependency> newDepList = Tools.CreateMileStone(dependenciesList);
+        _dal.Dependency.Reset();
+        //set the new dependencies
+        foreach (var dependency in newDepList)
+        {
+            _dal.Dependency.Create(dependency);
 
 
-        //}
+        }
         List<DO.Task?> allTasks = _dal.Task.ReadAll().ToList();
-        int idOfStartMilestone = allTasks.Where(task => task!.Alias == "M0").Select(task => task!.Id).First();
+        int idOfStartMilestone = allTasks.Where(task => task!.Description == "MStart").Select(task => task!.Id).First();
         DO.Task? startMilestoneData = _dal.Task.Read(idOfStartMilestone);
         if (startMilestoneData is not null)
         {
@@ -31,18 +35,23 @@ internal class MilestoneImplementation : IMilestone
         DO.Task? EndMilestoneData = _dal.Task.Read(idOfEndMilestone);
         if (EndMilestoneData is not null)
         {
-            EndMilestoneData.ScheduleDate = _dal.EndProjectDate;
+            EndMilestoneData.DeadLine = _dal.EndProjectDate;
             _dal.Task.Update(EndMilestoneData);
 
         }
 
-
-        //Tools.updateDeadLineDate(idOfEndMilestone, idOfStartMilestone, dependenciesList);
-        //Tools.updateScheduledDate(idOfStartMilestone, idOfEndMilestone, dependenciesList);
-
+        dependenciesList = _dal.Dependency.ReadAll().ToList();
+        Tools.updateDeadLineDate(idOfEndMilestone, idOfStartMilestone, dependenciesList);
+        Tools.updateScheduledDate(idOfStartMilestone, idOfEndMilestone, dependenciesList);
         Tools.renameMilestonesAlias(dependenciesList);
 
     }
+    /// <summary>
+    /// read a specific milestone
+    /// </summary>
+    /// <param name="id">id of the milestone to read</param>
+    /// <returns>Milestone object of the wanted milestone</returns>
+    /// <exception cref="BO.BlDoesNotExistException"></exception>
     public Milestone? Read(int id)
     {
         try
@@ -82,7 +91,12 @@ internal class MilestoneImplementation : IMilestone
             throw new BO.BlDoesNotExistException($"milestone with ID={id} does not  exists", ex);
         }
     }
-
+    /// <summary>
+    /// update a milestone
+    /// </summary>
+    /// <param name="item">the updated item </param>
+    /// <returns>returns the updated milestone</returns>
+    /// <exception cref="BO.BlDoesNotExistException"></exception>
     public BO.Milestone Update(Milestone item)
     {
         //check if the milestone existes
