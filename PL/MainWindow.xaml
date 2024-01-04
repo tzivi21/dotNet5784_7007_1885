@@ -7,7 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <!-- A button that you click will lead to the list view window -->
-        <Button Content="Handle Task" HorizontalAlignment="Center" Width="264" Margin="0,81,0,263" Click="Handle_Task_Click"/>
+
     </Grid>
 </Window>
