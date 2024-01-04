@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PL.Task
+namespace PL
 {
     /// <summary>
     /// Interaction logic for TaskListWindow.xaml
@@ -22,6 +22,11 @@ namespace PL.Task
         public TaskListWindow()
         {
             InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            throw new NotImplementedException();
         }
     }
 }
