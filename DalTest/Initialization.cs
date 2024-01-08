@@ -204,10 +204,10 @@ public static class Initialization
         #endregion
         #region temporary initialization
         //גם בתלויות יצרנו תלויות ספציפיות כדי לעקוב אחרי האלגוריתם של לוז הפרויקט
-        s_dal!.Dependency.Create(new Dependency(3, 1));
-        s_dal!.Dependency.Create(new Dependency(3, 2));
-        s_dal!.Dependency.Create(new Dependency(4, 3));
-        s_dal!.Dependency.Create(new Dependency(5, 3));
+        s_dal!.Dependency.Create(new Dependency(1783, 1781));
+        s_dal!.Dependency.Create(new Dependency(1783, 1782));
+        s_dal!.Dependency.Create(new Dependency(1784, 1783));
+        s_dal!.Dependency.Create(new Dependency(1785, 1783));
         #endregion
     }
     public static void Do()

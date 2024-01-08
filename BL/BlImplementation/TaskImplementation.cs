@@ -58,113 +58,74 @@ internal class TaskImplementation : ITask
     public BO.Task? Read(int id)
     {
         DO.Task? task = _dal.Task.Read(id);
-        if (task == null)   
-            throw new BO.BlDoesNotExistException($"task with ID={id} does Not exist");
-
+        if (task == null)
+        {
+            throw new BO.BlDoesNotExistException($"Task with ID={id} does not exist");
+        }
         else
         {
-            //create the list of dependencies 
-            List<BO.TaskInList> dependencies = (from d in _dal.Dependency!.ReadAll(d => d.DependentTask == id)
-                                                where true
-                                                select new BO.TaskInList()
-                                                {
-                                                    Id = d.DependsOnTask,
-                                                    Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias ?? "",
-                                                    Description = _dal.Task!.Read(d.DependsOnTask)?.Description?? "",
-                                                    Status = Tools.DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
-                                                }
-                                                ).ToList();
-            //calculates the status
+            // Create the list of dependencies 
+            List<BO.TaskInList> dependencies = _dal.Dependency!.ReadAll(d => d.DependentTask == id)
+                .Select(d => new BO.TaskInList()
+                {
+                    Id = d.DependsOnTask,
+                    Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias ?? "",
+                    Description = _dal.Task!.Read(d.DependsOnTask)?.Description ?? "",
+                    Status = Tools.DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
+                })
+                .ToList();
+
+            // Calculate the status
             Status status = Tools.DetermineStatus(task);
-            //search and create the engineer details that works on this task
-            EngineerInTask engineer = new BO.EngineerInTask()
+
+            // Search and create the engineer details that work on this task
+            EngineerInTask engineer = new BO.EngineerInTask();
+            var engineerTask = _dal.Engineer!.Read(task.Engineerid ?? 0);
+            if (engineerTask != null)
             {
-                Id = _dal.Engineer!.Read(task.Engineerid??0)?.Id ?? 0,
-                Name = _dal.Engineer!.Read(task.Engineerid??0)?.Name??""
-            };
-            //check in the dependencies which one of them is the milestone of this task
+                engineer.Id = engineerTask.Id;
+                engineer.Name = engineerTask.Name ?? "";
+            }
+
+            // Check which of the dependencies is the milestone of this task
             MilestoneInTask? milestone = dependencies
-                    .Where(d => _dal.Task!.Read(d.Id)!.Milestone == true)
-                    .Select(d => new BO.MilestoneInTask()
-                    {
-                        Id = d.Id,
-                        Alias = d.Alias
-                    })
-                    .FirstOrDefault();
+                .Where(d => _dal.Task!.Read(d.Id)?.Milestone == true)
+                .Select(d => new BO.MilestoneInTask()
+                {
+                    Id = d.Id,
+                    Alias = d.Alias
+                })
+                .FirstOrDefault();
+
             return new BO.Task()
             {
                 Id = id,
                 Description = task.Description,
                 Alias = task.Alias,
-                RequiredEffortTime=task.RequiredEffortTime,
+                RequiredEffortTime = task.RequiredEffortTime,
                 CreatedAtDate = task.CreatedAt,
                 Status = status,
                 Dependencies = dependencies,
                 Milestone = milestone,
                 StartDate = task.Start,
                 ScheduledStartDate = task.ScheduleDate,
-                //for cast=start time+the requiered time to finish the task
-                ForeCastDate =task.Start?.Add(task.RequiredEffortTime??new TimeSpan(0)),
+                ForeCastDate = task.Start?.Add(task.RequiredEffortTime ?? TimeSpan.Zero),
                 DeadlineDate = task.DeadLine,
                 CompleteDate = task.Complete,
                 Deliverables = task.Deliverables,
                 Remarks = task.Remarks,
                 Engineer = engineer,
                 ComplexityLevel = task.ComplexityLevel
-            }
-
-
-
-
-            ;
+            };
         }
-
-
     }
-   
+
+
     public IEnumerable<BO.Task> ReadAll()
     {
-        return from t in _dal.Task.ReadAll()
-               let dependencies = _dal.Dependency!.ReadAll(d => d.DependentTask == t.Id)
-                                .Select(d => new BO.TaskInList()
-                                {
-                                    Id = d.DependsOnTask,
-                                    Alias = _dal.Task!.Read(d.DependsOnTask)?.Alias ?? "",
-                                    Description = _dal.Task!.Read(d.DependsOnTask)?.Description?? "",
-                                    Status = Tools.DetermineStatus(_dal.Task!.Read(d.DependsOnTask))
-                                })
-                                .ToList()
-               select new BO.Task()
-               {
-                   Id = t.Id,
-                   Description = t.Description,
-                   Alias = t.Alias,
-                   CreatedAtDate = t.CreatedAt,
-                   Status = Tools.DetermineStatus(t),
-                   Dependencies = dependencies,
-                   Milestone = dependencies
-                                .Where(d => _dal.Task!.Read(d.Id)!.Milestone == true)
-                                .Select(d => new BO.MilestoneInTask()
-                                {
-                                    Id = d.Id,
-                                    Alias = d.Alias
-                                })
-                                .FirstOrDefault(),
-                   StartDate = t.Start,
-                   ScheduledStartDate = t.ScheduleDate,
-                   ForeCastDate = DateTime.MinValue,
-                   DeadlineDate = t.DeadLine,
-                   CompleteDate = t.Complete,
-                   Deliverables = t.Deliverables,
-                   Remarks = t.Remarks,
-                   Engineer = new BO.EngineerInTask()
-                   {
-                       Id = _dal.Engineer!.Read(t.Id)!.Id,
-                       Name = _dal.Engineer!.Read(t.Id)!.Name
-                   },
-                   ComplexityLevel = t.ComplexityLevel
-
-               };
+        return  from t in _dal.Task.ReadAll()
+                   where t.Milestone == false
+                   select Read(t.Id);
     }
 
     public void Update(BO.Task item)

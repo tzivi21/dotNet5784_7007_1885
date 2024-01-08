@@ -97,20 +97,7 @@ internal class EngineerImplementation : IEngineer
     public IEnumerable<Engineer> ReadAll()
     {
         return from e in _dal.Engineer.ReadAll()
-               select new BO.Engineer()
-               {
-                   Id = e.Id,
-                   Name = e.Name,
-                   Email = e.Email,
-                   Level = e.Level,
-                   Cost = 0,
-                   Task = new BO.TaskInEngineer()
-                   {
-                       Id = _dal.Task.Read(t => t.Engineerid == e.Id)!.Id,
-                       Alias = _dal.Task.Read(t => t.Engineerid == e.Id)!.Alias ?? ""
-                   }
-
-               };
+               select Read(e.Id);
     }
 
     public void Update(Engineer item)

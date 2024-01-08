@@ -20,5 +20,14 @@ namespace PL
         {
             InitializeComponent();
         }
+        private void btnTasks_Click(object sender, RoutedEventArgs e)
+        {
+            new TaskListWindow().Show();
+        }
+        private void initialization_Click(object sender, RoutedEventArgs e)
+        {
+            DalTest.Initialization.Do(); 
+        }
+
     }
 }
