@@ -16,4 +16,12 @@ sealed internal class DalList : IDal
     {
         get => DataSource.Config.startProjectDate;
     }
+
+    public void Reset()
+    {
+        DataSource.Tasks!.Clear();
+        DataSource.Engineers!.Clear();
+        DataSource.Dependencies!.Clear();
+
+    }
 }

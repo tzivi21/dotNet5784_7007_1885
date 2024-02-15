@@ -1,0 +1,44 @@
+﻿<Window x:Class="PL.Engineer.EngineerListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="TaskListWindow" Height="640" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Row for engineer selection -->
+            <RowDefinition Height="*"/>
+            <!-- Row for ListView -->
+            <RowDefinition Height="60"/>
+            <!-- Row for Add button -->
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <!-- Engineer selection -->
+        <Label Grid.Row="0" Grid.Column="0" Content="Select engineer experience level:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+        <!-- ComboBox on the right -->
+        <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+              SelectedValue="{Binding Experience, Mode=TwoWay}" 
+              ItemsSource="{Binding Source={StaticResource EngineerExperienceKey}}" 
+              SelectionChanged="cbExperienceSelector_SelectionChanged"/>
+        <!-- ListView -->
+        <ListView Grid.ColumnSpan="2"  MouseDoubleClick="EngineersList_MouseDoubleClick" ItemsSource="{Binding EngineerList}" Grid.Row="1" Margin="10,10,10,0" VerticalAlignment="Top">
+            <ListView.View>
+                <GridView>
+                    <!-- Your GridViewColumns -->
+                    <GridViewColumn Header="Engineers"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!-- Add button -->
+        <Button  Click="Handle_Add_Click" Content="Add" Grid.Row="2" HorizontalAlignment="Center" Width="200" Margin="10,10,0,10"/>
+    </Grid>
+</Window>

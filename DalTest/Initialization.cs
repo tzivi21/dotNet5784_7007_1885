@@ -213,9 +213,20 @@ public static class Initialization
     public static void Do()
     {
         s_dal = Factory.Get;
-        //createEngineers();
+        createEngineers();
         createTasks();
         createDependencies();
+    }
+    public static void Reset()
+    {
+        s_dal = Factory.Get;
+        if (s_dal != null)
+        {
+            s_dal.Engineer.Reset();
+            s_dal.Task.Reset();
+            s_dal.Dependency.Reset();
+        }
+        
     }
 
 

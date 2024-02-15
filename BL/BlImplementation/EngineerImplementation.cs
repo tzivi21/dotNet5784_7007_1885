@@ -1,6 +1,7 @@
 ﻿
 using BlApi;
 using BO;
+using System.Linq;
 using System.Net.Mail;
 
 namespace BlImplementation;
@@ -94,10 +95,19 @@ internal class EngineerImplementation : IEngineer
         };
     }
 
-    public IEnumerable<Engineer> ReadAll()
+    public IEnumerable<BO.Engineer> ReadAll(Func<DO.Engineer, bool>? condition=null)
     {
-        return from e in _dal.Engineer.ReadAll()
-               select Read(e.Id);
+        if(condition == null)
+        {
+            return from e in _dal.Engineer.ReadAll()
+                   select Read(e.Id);
+        }
+        else
+        {
+            return from e in _dal.Engineer.ReadAll(condition)
+                   select Read(e.Id);
+        }
+        
     }
 
     public void Update(Engineer item)

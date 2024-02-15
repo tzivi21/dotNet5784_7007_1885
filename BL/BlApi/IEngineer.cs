@@ -20,7 +20,7 @@ public interface IEngineer
     /// <param name="id">the id of the wanted engineer</param>
     /// <returns>engineer object with the given id</returns>
 
-    public IEnumerable<BO.Engineer> ReadAll();
+    public IEnumerable<BO.Engineer> ReadAll(Func<DO.Engineer, bool>? condition = null);
     /// <summary>
     /// update a specific engineer
     /// </summary>
