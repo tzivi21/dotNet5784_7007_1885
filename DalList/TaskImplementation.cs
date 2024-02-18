@@ -26,7 +26,6 @@ internal class TaskImplementation : ITask
         newItem = item;
         newItem.Id = newId;
         DataSource.Tasks.Add(newItem);
-        newId = DataSource.Config.NextTaskId; // Increment nextTaskId after it's used
         return newId;
     }
     /// <summary>

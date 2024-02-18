@@ -32,7 +32,8 @@ public static class Initialization
             item.Id= s_rand.Next(minValue, maxValue); 
             item.Name= engineers_names[i];
             item.Email = engineers_names[i] + emailAddressEnd;
-            //picks a randon Experience from the enum 
+            item.Cost=s_rand.Next(2000, 10000); ;
+            //picks a random Experience from the enum 
             EngineerExperience randomExperienceNext = (EngineerExperience)s_rand.Next(Enum.GetValues(typeof(EngineerExperience)).Length);
             item.Level = randomExperienceNext;
             if (s_dal!.Engineer.Read(item.Id)==null)
@@ -42,11 +43,12 @@ public static class Initialization
         }
 
 
+
     }
     private static void createTasks()//initialize the task's list with random values
     {
         #region full initialization
-        ////an array of random strings to play with them
+        //an array of random strings to play with them
         //string[] randomShortSentences = new string[]
         //{
         //    "Hello!","Good morning.","How are you?","I am fine.","Nice to meet you.","Thank you.","You're welcome.","Please wait.",
@@ -66,12 +68,12 @@ public static class Initialization
         //Random random = new Random();
         //for (int i = 0; i < randomShortSentences.Length; i++)
         //{
-        //    Task item =new Task();
+        //    Task item = new Task();
         //    //create a random sentence from two of the short sentences above
 
-        //    item.Description = randomShortSentences[s_rand.Next(randomShortSentences.Length-1)] + randomShortSentences[s_rand.Next(randomShortSentences.Length-1)];
+        //    item.Description = randomShortSentences[s_rand.Next(randomShortSentences.Length - 1)] + randomShortSentences[s_rand.Next(randomShortSentences.Length - 1)];
         //    //create a random alias by randomly picking a sentence from the array above
-        //    item.Alias = randomShortSentences[s_rand.Next(randomShortSentences.Length-1)];
+        //    item.Alias = randomShortSentences[s_rand.Next(randomShortSentences.Length - 1)];
         //    item.Milestone = false;
         //    DateTime biggestDate = (DateTime)s_dal.EndProjectDate;
         //    DateTime smallestDate = (DateTime)s_dal.StartProjectDate;
@@ -91,7 +93,7 @@ public static class Initialization
         //    item.ScheduleDate = smallestDate.AddDays(s_rand.Next((biggestDate - smallestDate).Days));
 
         //    // Generate the deadline date ensuring it's after the schedule date
-        //    TimeSpan timeSpan = biggestDate -(DateTime) item.ScheduleDate;
+        //    TimeSpan timeSpan = biggestDate - (DateTime)item.ScheduleDate;
         //    int maxDays = timeSpan.Days;
 
         //    // Ensure the range for random days accommodates the possibility of a deadline after the schedule date
@@ -103,8 +105,8 @@ public static class Initialization
         //        minDays = maxDays; // Swap minDays and maxDays
         //        maxDays = temp; // Assign maxDays with the original minDays value
         //    }
-        //        int randomDays = s_rand.Next(minDays, maxDays + 1);
-        //    DateTime scheduled=(DateTime)item.ScheduleDate;
+        //    int randomDays = s_rand.Next(minDays, maxDays + 1);
+        //    DateTime scheduled = (DateTime)item.ScheduleDate;
         //    // Add the random number of days to scheduleDate to get the deadline
         //    item.DeadLine = scheduled.AddDays(randomDays);
 
@@ -119,11 +121,11 @@ public static class Initialization
         //    //a random string for deliverables
         //    item.Deliverables = randomShortSentences[i];
         //    //a random string for remarks
-        //    item.Remarks = randomShortSentences[randomShortSentences.Length-1];
+        //    item.Remarks = randomShortSentences[randomShortSentences.Length - 1];
         //    item.RequiredEffortTime = TimeSpan.FromTicks(random.Next(1, 10000));
         //    //get the engineers list to get an random engineer id from it
-        //    List < Engineer? > engineers_list= s_dal!.Engineer.ReadAll().ToList();//get the engineers list in order to get an id that exist
-        //    int randomIndex = s_rand.Next(0, engineers_list.Count-1);
+        //    List<Engineer?> engineers_list = s_dal!.Engineer.ReadAll().ToList();//get the engineers list in order to get an id that exist
+        //    int randomIndex = s_rand.Next(0, engineers_list.Count - 1);
         //    Engineer randomEngineer = engineers_list[randomIndex];
         //    item.Engineerid = randomEngineer!.Id;
         //    EngineerExperience randomExperienceNext = (EngineerExperience)random.Next(Enum.GetValues(typeof(EngineerExperience)).Length);
@@ -138,7 +140,7 @@ public static class Initialization
         //בשביל לשלוט ביצירת האבני דרך והזמנים יצרנו כמה משימות בודדות לפי נתוני המשימות שניתנו בתיאור של האלגוריתם ליצירת אבני דרך בתיאור הכללי של הפרויקט
         s_dal!.Task.Create(new Task()
         {
-           
+
             Description = "task1",
             Alias = "1",
             Milestone = false,
@@ -148,7 +150,7 @@ public static class Initialization
 
         s_dal!.Task.Create(new Task()
         {
-            
+
             Description = "task2",
             Alias = "2",
             Milestone = false,
@@ -158,7 +160,7 @@ public static class Initialization
 
         s_dal!.Task.Create(new Task()
         {
-            
+
             Description = "task3",
             Alias = "3",
             Milestone = false,
@@ -178,7 +180,7 @@ public static class Initialization
 
         s_dal!.Task.Create(new Task()
         {
-            
+
             Description = "task5",
             Alias = "5",
             Milestone = false,

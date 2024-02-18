@@ -33,7 +33,8 @@ internal class EngineerImplementation : IEngineer
             Id = item.Id,
             Name = item.Name,
             Email = item.Email,
-            Level = item.Level,
+            Level = (DO.EngineerExperience)item.Level!,
+            Cost=item.Cost
         };
         try
         {
@@ -89,8 +90,8 @@ internal class EngineerImplementation : IEngineer
             Id = id,
             Name = DOEngineer.Name,
             Email = DOEngineer.Email,
-            Level = DOEngineer.Level,
-            Cost = 0,
+            Level = (BO.EngineerExperience)DOEngineer.Level!,
+            Cost = DOEngineer.Cost,
             Task = engineerTask
         };
     }
@@ -132,7 +133,8 @@ internal class EngineerImplementation : IEngineer
                 Id = item.Id,
                 Name = item.Name,
                 Email = item.Email,
-                Level = item.Level,
+                Level = (DO.EngineerExperience)item.Level!,
+                Cost=item.Cost
             };
             _dal.Engineer.Update(DOEnginner);
         }

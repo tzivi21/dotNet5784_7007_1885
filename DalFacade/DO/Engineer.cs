@@ -14,6 +14,7 @@ public record Engineer
     public string Name { set; get; }  = "";
     public string Email { set; get; } = "";
     public EngineerExperience? Level { set; get; }
+    public double? Cost { set; get; }
     public Engineer(int myId, string myName, string myEmail,EngineerExperience mylevel)
     {
         Id = myId;

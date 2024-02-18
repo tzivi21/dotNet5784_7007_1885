@@ -1,5 +1,7 @@
 ﻿
 using System.Windows;
+using System.Net.Mail;
+
 namespace PL.Engineer;
 
 /// <summary>
@@ -49,13 +51,15 @@ public partial class EngineerWindow : Window
         {
             try
             {
+                //checking the email address 
                 s_bl.Engineer.Add(CurrentEngineer!);
                 MessageBox.Show("Add action was successful.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
             }
             catch (Exception ex) {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error:  {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            
         }
         else
         {

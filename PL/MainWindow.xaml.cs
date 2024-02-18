@@ -23,11 +23,13 @@ namespace PL
         }
         private void initialization_Click(object sender, RoutedEventArgs e)
         {
-            s_bl.InitializeDB(); 
+            s_bl.InitializeDB();
+            MessageBox.Show("the data base was initialized successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         private void reset_Click(object sender, RoutedEventArgs e)
         {
             s_bl.ResetDB();
+            MessageBox.Show("the data base reset successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
     }

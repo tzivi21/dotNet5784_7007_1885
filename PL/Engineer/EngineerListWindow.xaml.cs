@@ -11,7 +11,7 @@ namespace PL.Engineer
     public partial class EngineerListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        public DO.EngineerExperience? Experience { get; set; } = DO.EngineerExperience.None;
+        public BO.EngineerExperience? Experience { get; set; } = BO.EngineerExperience.None;
         public IEnumerable<BO.Engineer> EngineerList
         {
             get { return (IEnumerable<BO.Engineer>)GetValue(EngineerListProperty); }
@@ -19,8 +19,8 @@ namespace PL.Engineer
         }
         private void cbExperienceSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            EngineerList = (Experience == DO.EngineerExperience.None) ?
-                s_bl?.Engineer.ReadAll()! : s_bl?.Engineer.ReadAll(item => item.Level == Experience)!;
+            EngineerList = (Experience == BO.EngineerExperience.None) ?
+                s_bl?.Engineer.ReadAll()! : s_bl?.Engineer.ReadAll(item => item.Level == (DO.EngineerExperience)Experience!)!;
         }
 
 

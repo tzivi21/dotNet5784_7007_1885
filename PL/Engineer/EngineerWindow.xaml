@@ -49,7 +49,7 @@
 
         <!-- TextBox for Engineer cost -->
         <Label Content="Cost:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding co , Mode=TwoWay, 
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Cost , Mode=TwoWay, 
             NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  HorizontalAlignment="Left"
             Height="NaN" Margin="3"  VerticalAlignment="Center" Width="120"/>
 

@@ -22,13 +22,13 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="WELCOME" Grid.Row="0" Style="{StaticResource WelcomeTextStyle}"></TextBlock>
+        <TextBlock Text="WELCOME " Grid.Row="0" Style="{StaticResource WelcomeTextStyle}"></TextBlock>
         <!--handle enginner actions-->
-        <Button Margin="20" Grid.Row="1" Click="btnEngineer_Click" Content="Handle Engineers" Width="200" Height="30"/>
+        <Button Margin="20" Grid.Row="1" Click="btnEngineer_Click" Content="Engineers" Width="200" Height="30"/>
         <!--handle initialization-->
-        <Button Margin="20" Grid.Row="2" Click="initialization_Click" Content="Handle initialization" Width="200" Height="30"></Button>
+        <Button Margin="20" Grid.Row="2" Click="initialization_Click" Content="Initialize DB" Width="200" Height="30"></Button>
         <!--handle reset-->
-        <Button Margin="20" Grid.Row="3" Click="reset_Click" Content="Handle reset" Width="200" Height="30"></Button>
+        <Button Margin="20" Grid.Row="3" Click="reset_Click" Content="Reset DB" Width="200" Height="30"></Button>
 
     </Grid>
 </Window>

@@ -4,8 +4,8 @@ namespace PL;
 
 public class  EngineerExperience : IEnumerable
 {
-    static readonly IEnumerable<DO.EngineerExperience> ex_enums =
-(Enum.GetValues(typeof(DO.EngineerExperience)) as IEnumerable<DO.EngineerExperience>)!;
+    static readonly IEnumerable<BO.EngineerExperience> ex_enums =
+(Enum.GetValues(typeof(BO.EngineerExperience)) as IEnumerable<BO.EngineerExperience>)!;
 
     public IEnumerator GetEnumerator() => ex_enums.GetEnumerator();
 }
