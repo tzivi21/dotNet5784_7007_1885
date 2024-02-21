@@ -15,7 +15,7 @@ public class TaskInList : IEquatable<TaskInList>
     public string? Alias { get; set; } = "";
     public Status? Status { get; set; }
     public override string ToString() => Tools.ToStringProperty(this);
-   
+   //
     public bool Equals(TaskInList other)
     {
         return other != null &&
