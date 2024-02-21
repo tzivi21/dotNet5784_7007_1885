@@ -8,12 +8,26 @@ namespace BO;
 ///  <param name="Status">the status of the task</param>
 ///  </summary>
 
-public class TaskInList
+public class TaskInList : IEquatable<TaskInList>
 {
     public int Id { get; set; }
     public string? Description { get; set; } = "";
     public string? Alias { get; set; } = "";
     public Status? Status { get; set; }
     public override string ToString() => Tools.ToStringProperty(this);
+   
+    public bool Equals(TaskInList other)
+    {
+        return other != null &&
+               Id == other.Id &&
+               Description == other.Description &&
+               Alias == other.Alias &&
+               Status == other.Status;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Description, Alias, Status);
+    }
 
 }

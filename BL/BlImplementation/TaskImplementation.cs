@@ -10,6 +10,18 @@ internal class TaskImplementation : ITask
 
     public int Create(BO.Task item)
     {
+        if(item.Dependencies!=null)
+        {
+            foreach (var dep in item.Dependencies)
+            {
+                DO.Dependency dependency=new DO.Dependency()
+                {
+                    DependentTask=dep.Id,
+                    DependsOnTask=item.Id
+                };
+                _dal.Dependency.Create(dependency);
+            }
+        }
         DO.Task DOTask = new
             (item.Description,
             item.Alias,
@@ -139,6 +151,24 @@ internal class TaskImplementation : ITask
             throw new BO.BlDoesNotExistException($"task with ID={item.Id} does Not exist");
         try
         {
+            BO.Task currentTask=Read(item.Id)!;
+            if (currentTask.Dependencies != null&&item.Dependencies!=null)
+            {
+                List<BO.TaskInList> dependenciesToAdd = currentTask.Dependencies.Except(item.Dependencies).ToList();
+                if (dependenciesToAdd.Count != 0)
+                {
+                    foreach (var dep in dependenciesToAdd)
+                    {
+                        DO.Dependency dependency = new DO.Dependency()
+                        {
+                            DependentTask = dep.Id,
+                            DependsOnTask = item.Id
+                        };
+                        _dal.Dependency.Create(dependency);
+                    }
+                }
+
+            }
             DO.Task updatedTask = new DO.Task()
             {
                 Id = item.Id,
