@@ -21,7 +21,7 @@ internal class TaskImplementation : ITask
             item.Deliverables,
             item.Remarks,
             item.Engineer?.Id??null,
-            item.ComplexityLevel);
+            (DO.EngineerExperience)item.ComplexityLevel!);
         try
         {
             int id = _dal.Task.Create(DOTask);
@@ -115,17 +115,22 @@ internal class TaskImplementation : ITask
                 Deliverables = task.Deliverables,
                 Remarks = task.Remarks,
                 Engineer = engineer,
-                ComplexityLevel = task.ComplexityLevel
+                ComplexityLevel = (BO.EngineerExperience)task.ComplexityLevel!
             };
         }
     }
 
 
-    public IEnumerable<BO.Task> ReadAll()
+    public IEnumerable<BO.Task> ReadAll(Func<BO.Task,bool>? condition=null)
     {
-        return  from t in _dal.Task.ReadAll()
-                   where t.Milestone == false
-                   select Read(t.Id);
+        var allTasks= from t in _dal.Task.ReadAll()
+                      where t.Milestone == false
+                      select Read(t.Id);
+        if (condition != null)
+        {
+            return allTasks.Where(t => condition(t));
+        }
+        return  allTasks;
     }
 
     public void Update(BO.Task item)
@@ -148,7 +153,7 @@ internal class TaskImplementation : ITask
                 Deliverables = item.Deliverables,
                 Remarks = item.Remarks,
                 Engineerid = item.Engineer.Id,
-                ComplexityLevel = item.ComplexityLevel
+                ComplexityLevel = (DO.EngineerExperience)item.ComplexityLevel!
             };
             _dal.Task!.Update(updatedTask);
         }

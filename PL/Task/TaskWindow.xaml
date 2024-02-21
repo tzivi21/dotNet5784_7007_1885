@@ -1,0 +1,142 @@
+﻿<Window x:Class="PL.Task.TaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Task"
+        mc:Ignorable="d"
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Title="TaskWindow" Width="500" Height="Auto">
+    <!--DataContext="{Binding CurrentTask, RelativeSource={RelativeSource Self}, Mode=TwoWay}"-->
+
+    <Grid>
+        <Grid HorizontalAlignment="Center" Width="400" Height="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- TextBox for task id -->
+            <Label Grid.Row="0" Content="Id:" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="0" Grid.Column="1" 
+             Text="{Binding CurrentTask.Id , Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  
+             HorizontalAlignment="Left" Height="NaN" Margin="3"  VerticalAlignment="Center" Width="120"
+             IsEnabled="False"/>
+
+
+            <!-- TextBox for task description -->
+            <Label Grid.Row="1" Content="Description:"  Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="1" 
+                     Text="{Binding CurrentTask.Description , Mode=TwoWay, NotifyOnValidationError=true,
+                ValidatesOnExceptions=true}"  HorizontalAlignment="Left" Height="NaN" Margin="3"  
+                     VerticalAlignment="Center" Width="120"/>
+            
+            <!-- TextBox for task alias -->
+            <Label Content="Alias:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CurrentTask.Alias , Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  HorizontalAlignment="Left" Height="NaN" Margin="3"  VerticalAlignment="Center" Width="120"/>
+
+            <!-- ComboBox for status Enum Property -->
+            <Label Content="Level:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3" 
+              ItemsSource="{Binding Source={StaticResource TaskStatusKey}}" 
+              SelectedValue="{Binding CurrentTask.Status, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+              VerticalAlignment="Center" Width="120"/>
+            
+            <!-- TextBox for task RequiredEffortTime -->
+            <Label Content="Required Effort Time:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentTask.RequiredEffortTime , Mode=TwoWay, 
+                NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  HorizontalAlignment="Left"
+                Height="NaN" Margin="3"  VerticalAlignment="Center" Width="120"/>
+
+            <!-- TextBox for task StartDate -->
+            <Label Content="Start date:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentTask.StartDate , Mode=TwoWay, 
+                NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  HorizontalAlignment="Left"
+                Height="NaN" Margin="3"  VerticalAlignment="Center" Width="120"/>
+
+            <!-- TextBox for task ForeCastDate -->
+            <Label Content="Forcast date:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding CurrentTask.ForeCastDate , Mode=TwoWay, 
+                NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  HorizontalAlignment="Left"
+                Height="NaN" Margin="3"  VerticalAlignment="Center" Width="120"/>
+
+            <!-- TextBox for task CompleteDate -->
+            <Label Content="Complete date" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding CurrentTask.CompleteDate , Mode=TwoWay, 
+                NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  HorizontalAlignment="Left"
+                Height="NaN" Margin="3"  VerticalAlignment="Center" Width="120"/>   
+
+            <!-- TextBox for task Deliverables -->
+            <Label Content="Deliverables:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding CurrentTask.Deliverables , Mode=TwoWay, 
+                NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  HorizontalAlignment="Left"
+                Height="NaN" Margin="3"  VerticalAlignment="Center" Width="120"/>
+            
+            <!-- TextBox for task remarks -->
+            <Label Content="Remarks:" Grid.Row="9" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding CurrentTask.Remarks , Mode=TwoWay, 
+                NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  HorizontalAlignment="Left"
+                Height="NaN" Margin="3"  VerticalAlignment="Center" Width="120"/>   
+
+            <!-- comboBox for task'engineer id  -->
+            <Label Content="Engineer's Id:" Grid.Row="10" Grid.Column="0" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="10" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3" 
+                  ItemsSource="{Binding EngineersIds}" 
+                  SelectedValue="{Binding CurrentTask.Engineer.Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+                  VerticalAlignment="Center" Width="120"/>
+
+
+
+            <!-- ComboBox for ComplexityLevel Property -->
+            <Label Content="ComplexityLevel:" Grid.Row="11" Grid.Column="0" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="11" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3" 
+              ItemsSource="{Binding Source={StaticResource EngineerExperienceKey}}" 
+              SelectedValue="{Binding CurrentTask.ComplexityLevel, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+              VerticalAlignment="Center" Width="120"/>
+
+            <!-- ComboBox for Dependencies Property -->
+            <Label Content="Dependencies:" Grid.Row="12" Grid.Column="0" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="12" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3" 
+              ItemsSource="{Binding AllDependencies}"
+              VerticalAlignment="Center" Width="120"
+            SelectionChanged="ComboBoxDependencies_SelectionChanged"/>  
+
+            <!-- Button for Add/Update Action -->
+            <Button Content="{Binding CurrentTask.Id, Mode=OneTime, Converter={StaticResource ConvertIdToContentKey}}"
+            Click="AddUpdateButton_Click"
+            Grid.Row="13" Grid.Column="0"
+            HorizontalAlignment="Left" Width="50"
+            Height="30"/>
+            <!--showing all current task dependencies-->
+            <ListView Grid.ColumnSpan="2" ItemsSource="{Binding Dependencies}" Grid.Row="14" Margin="10,10,10,0" VerticalAlignment="Top">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="190" />
+                        <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" Width="190" />
+                        <GridViewColumn Header="Alias" DisplayMemberBinding="{Binding Alias}" Width="190" />
+                        <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" Width="190" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </Grid>
+</Window>

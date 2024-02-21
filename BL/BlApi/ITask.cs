@@ -19,7 +19,7 @@ public interface ITask
     /// return the information of all tasks
     /// </summary>
     /// <returns>an enumerable list of all tasks</returns>
-    public IEnumerable<BO.Task> ReadAll();
+    public IEnumerable<BO.Task> ReadAll(Func<BO.Task, bool>? condition = null);
     /// <summary>
     /// update a specific task
     /// </summary>

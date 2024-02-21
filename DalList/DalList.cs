@@ -42,4 +42,8 @@ sealed internal class DalList : IDal
         DataSource.Dependencies!.Clear();
 
     }
+    public void ResetConfiguration()
+    {
+        DataSource.Config.ResetIds();
+    }
 }

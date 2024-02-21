@@ -510,7 +510,7 @@ class Program
             {
                 if (Enum.IsDefined(typeof(DO.EngineerExperience), userInput - 1))
                 {
-                    newEngineer.Level = (DO.EngineerExperience)(userInput - 1);
+                    newEngineer.Level = (BO.EngineerExperience)(userInput - 1);
                     isValidInput = true;
                 }
                 else

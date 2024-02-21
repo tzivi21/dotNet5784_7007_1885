@@ -230,6 +230,9 @@ public static class Initialization
         }
         
     }
-
+    public static void ResetConfiguration()
+    {
+        s_dal!.ResetConfiguration();
+    }
 
 }

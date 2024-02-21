@@ -8,6 +8,7 @@ public interface IBl
     public IMilestone Milestone { get; }
     public void InitializeDB();
     public void ResetDB();
+    public void ResetConfiguration();
 
 
 }

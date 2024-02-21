@@ -17,7 +17,10 @@ public static class DataSource
         internal static int NextDependencyId { get { return nextDependencyId++; } }
         internal static string startProjectDate = "2020-01-01T12:00:00";
         internal static string endProjectDate = "2028-01-01T12:00:00";
-
-
+        internal static void ResetIds()
+        {
+            nextTaskId = startTaskId;
+            nextDependencyId = startDependencyId;
+        }
     }
 }

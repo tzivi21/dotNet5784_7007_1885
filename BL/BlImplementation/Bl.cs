@@ -10,6 +10,12 @@ internal class Bl : IBl
 
     public IMilestone Milestone => new MilestoneImplementation();
     public void InitializeDB() => DalTest.Initialization.Do();
+
+    public void ResetConfiguration()
+    {
+        DalTest.Initialization.ResetConfiguration();
+    }
+
     public void ResetDB() => DalTest.Initialization.Reset();
 
 

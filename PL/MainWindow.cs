@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using PL.Administrator;
 using PL.Engineer;
 namespace PL
 {
@@ -17,16 +18,21 @@ namespace PL
         {
             InitializeComponent();
         }
-        private void btnEngineer_Click(object sender, RoutedEventArgs e)
-        {
-            new EngineerListWindow().Show();
-        }
-        private void initialization_Click(object sender, RoutedEventArgs e)
+        private void Initialization_Click(object sender, RoutedEventArgs e)
         {
             s_bl.InitializeDB();
             MessageBox.Show("the data base was initialized successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-        private void reset_Click(object sender, RoutedEventArgs e)
+        private void Administrator_Click(object sender, RoutedEventArgs e)
+        {
+            new AdministratorMainWindow().Show();
+            Close();
+        }
+        private void Engineer_click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+        private void Reset_Click(object sender, RoutedEventArgs e)
         {
             s_bl.ResetDB();
             MessageBox.Show("the data base reset successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
