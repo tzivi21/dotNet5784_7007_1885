@@ -62,29 +62,34 @@ public static class Tools
     /// <returns>The status of the task based on specific conditions.</returns>
     public static Status DetermineStatus(DO.Task task)
     {
-        if (task.Start == null && task.DeadLine == null)
+        if (task != null)
         {
-            return Status.Unscheduled;
-        }
-        else if (task.Start != null && task.DeadLine != null && task.Complete == null)
-        {
-            if (DateTime.Now < task.DeadLine)
+            if (task.Start == null && task.DeadLine == null)
             {
-                return Status.OnTrack;
+                return Status.Unscheduled;
+            }
+            else if (task.Start != null && task.DeadLine != null && task.Complete == null)
+            {
+                if (DateTime.Now < task.DeadLine)
+                {
+                    return Status.OnTrack;
+                }
+                else
+                {
+                    return Status.InJeopardy;
+                }
+            }
+            else if (task.Complete <= DateTime.Now)
+            {
+                return Status.Done;
             }
             else
             {
-                return Status.InJeopardy;
+                return Status.Scheduled;
             }
         }
-        else if (task.Complete <= DateTime.Now)
-        {
-            return Status.Done;
-        }
-        else
-        {
-            return Status.Scheduled;
-        }
+        return Status.None;
+        
     }
 
     /// <summary>

@@ -14,6 +14,7 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -30,7 +31,8 @@ namespace PL
         }
         private void Engineer_click(object sender, RoutedEventArgs e)
         {
-            
+            new EnterEngineerIdWindow().Show();
+            Close();
         }
         private void Reset_Click(object sender, RoutedEventArgs e)
         {

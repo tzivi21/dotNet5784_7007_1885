@@ -8,5 +8,8 @@
         <local:TaskStatus x:Key="TaskStatusKey" />
         <local:ConvertIdToContent x:Key="ConvertIdToContentKey"/>
         <local:IdToIsEnabledConverter x:Key="ConverIdToEnableKey" />
+        <local:EngineerIdToIsEnabledConverter x:Key="EngineerIdToIsEnabledConverterKey" />
+        <local:EngineerIdToVisibilityConverter x:Key="EngineerIdToVisibilityConverterKey" />
+
     </Application.Resources>
 </Application>

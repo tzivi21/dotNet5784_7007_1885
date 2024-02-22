@@ -23,6 +23,11 @@ namespace PL.Task
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public BO.Status? Status { get; set; } = BO.Status.None;
+        public int EngineerId
+        {
+            get { return (int)GetValue(EngineerIdProperty); }
+            set { SetValue(EngineerIdProperty, value); }
+        }
         public IEnumerable<BO.TaskInList>? TasksList
         {
             get { return (IEnumerable<BO.TaskInList>)GetValue(TaskListProperty); }
@@ -33,6 +38,9 @@ namespace PL.Task
             get { return (string)GetValue(AliasProperty); }
             set { SetValue(AliasProperty, value); }
         }
+        public static readonly DependencyProperty EngineerIdProperty =
+                DependencyProperty.Register("EngineerId", typeof(int), typeof(TaskListWindow), new PropertyMetadata(null));
+
         public static readonly DependencyProperty AliasProperty =
                 DependencyProperty.Register("Alias", typeof(string), typeof(TaskListWindow), new PropertyMetadata(null));
 
@@ -94,9 +102,21 @@ namespace PL.Task
         {
             TasksList =Convert_tasks_to_taskinlist( s_bl?.Task.ReadAll());
         }
-        public TaskListWindow()
+        public TaskListWindow(int id=0)
         {
             InitializeComponent();
+            EngineerId = id;
+            if (EngineerId!= 0)
+            {
+                TasksList = Convert_tasks_to_taskinlist(s_bl?.Task.ReadAll(t =>
+                {
+                    if (t.Engineer == null)
+                    {
+                        return false;
+                    }
+                    return t.Engineer.Id== EngineerId;
+                }));
+            }
             TasksList = Convert_tasks_to_taskinlist(s_bl?.Task.ReadAll());
 
         }

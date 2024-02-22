@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace PL;
@@ -29,3 +30,30 @@ public class IdToIsEnabledConverter : IValueConverter
         throw new NotImplementedException();
     }
 }
+public class EngineerIdToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        int engineerId = (int)value;
+        return engineerId != 0 ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+public class EngineerIdToIsEnabledConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        int engineerId = (int)value;
+        return engineerId == 0;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+

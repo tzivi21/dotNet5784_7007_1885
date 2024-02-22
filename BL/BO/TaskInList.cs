@@ -14,20 +14,16 @@ public class TaskInList : IEquatable<TaskInList>
     public string? Description { get; set; } = "";
     public string? Alias { get; set; } = "";
     public Status? Status { get; set; }
+
     public override string ToString() => Tools.ToStringProperty(this);
-   //
+
     public bool Equals(TaskInList other)
     {
-        return other != null &&
-               Id == other.Id &&
-               Description == other.Description &&
-               Alias == other.Alias &&
-               Status == other.Status;
+        return other != null && Id == other.Id;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Description, Alias, Status);
+        return Id.GetHashCode();
     }
-
 }

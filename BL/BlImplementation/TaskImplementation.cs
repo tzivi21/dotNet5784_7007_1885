@@ -10,18 +10,7 @@ internal class TaskImplementation : ITask
 
     public int Create(BO.Task item)
     {
-        if(item.Dependencies!=null)
-        {
-            foreach (var dep in item.Dependencies)
-            {
-                DO.Dependency dependency=new DO.Dependency()
-                {
-                    DependentTask=dep.Id,
-                    DependsOnTask=item.Id
-                };
-                _dal.Dependency.Create(dependency);
-            }
-        }
+       
         DO.Task DOTask = new
             (item.Description,
             item.Alias,
@@ -37,6 +26,18 @@ internal class TaskImplementation : ITask
         try
         {
             int id = _dal.Task.Create(DOTask);
+            if (item.Dependencies != null)
+            {
+                foreach (var dep in item.Dependencies)
+                {
+                    DO.Dependency dependency = new DO.Dependency()
+                    {
+                        DependentTask = id,
+                        DependsOnTask = dep.Id
+                    };
+                    _dal.Dependency.Create(dependency);
+                }
+            }
             return id;
         }
         catch (DO.DalAlreadyExistException ex)
@@ -154,15 +155,15 @@ internal class TaskImplementation : ITask
             BO.Task currentTask=Read(item.Id)!;
             if (currentTask.Dependencies != null&&item.Dependencies!=null)
             {
-                List<BO.TaskInList> dependenciesToAdd = currentTask.Dependencies.Except(item.Dependencies).ToList();
+                List<BO.TaskInList> dependenciesToAdd = item.Dependencies.Except(currentTask.Dependencies).ToList();
                 if (dependenciesToAdd.Count != 0)
                 {
                     foreach (var dep in dependenciesToAdd)
                     {
                         DO.Dependency dependency = new DO.Dependency()
                         {
-                            DependentTask = dep.Id,
-                            DependsOnTask = item.Id
+                            DependentTask = item.Id,
+                            DependsOnTask = dep.Id
                         };
                         _dal.Dependency.Create(dependency);
                     }

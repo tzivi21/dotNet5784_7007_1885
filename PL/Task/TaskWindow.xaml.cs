@@ -23,7 +23,6 @@ namespace PL.Task
     public partial class TaskWindow : Window
     {
         public PageMode Mode { get; private set; }
-        public event PropertyChangedEventHandler PropertyChanged;
 
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
@@ -113,7 +112,12 @@ namespace PL.Task
             // Ensure the selected item is not null and is of the expected type
             if (sender is ComboBox comboBox && comboBox.SelectedItem is BO.TaskInList selectedItem)
             {
-                if(CurrentTask!.Dependencies!.Find(t=>t.Id == selectedItem.Id) == null)
+                if(selectedItem.Id == CurrentTask.Id)
+                {
+                    MessageBox.Show("Error:can't had self dependency", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+                if (CurrentTask!.Dependencies!.Find(t=>t.Id == selectedItem.Id) == null)
                 {
                     Dependencies.Add(selectedItem);
                     // Update the CurrentTask.Dependencies list as well

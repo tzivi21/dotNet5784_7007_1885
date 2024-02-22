@@ -193,23 +193,40 @@ public static class Initialization
     private static void createDependencies()//initialize the dependency's list with random values
     {
         #region full initialization
-        //for(int i = 0; i < 250; i++) 
-        //{
-        //    Dependency item= new Dependency();
-        //    List<Task?> tasks_list = s_dal!.Task.ReadAll().ToList();//get the tasks list in order to get a random task id's that exists 
-        //    int randomIndex1 = s_rand.Next(0, tasks_list.Count-1);
-        //    int randomIndex2 = s_rand.Next(0, tasks_list.Count - 1);
-        //    item.DependentTask = tasks_list[randomIndex1].Id;
-        //    item.DependsOnTask = tasks_list[randomIndex2].Id;
-        //    s_dal!.Dependency.Create(item);
-        //}
+        for (int i = 0; i < 10; i++)
+        {
+            List<Task?> tasks_list = s_dal!.Task.ReadAll().ToList();
+            int randomIndex1 = s_rand.Next(0, tasks_list.Count);
+            int randomIndex2 = s_rand.Next(0, tasks_list.Count);
+
+            // Check if randomIndex1 and randomIndex2 are the same
+            while (randomIndex1 == randomIndex2)
+            {
+                randomIndex2 = s_rand.Next(0, tasks_list.Count);
+            }
+
+            int dependentTaskId = tasks_list[randomIndex1].Id;
+            int dependsOnTaskId = tasks_list[randomIndex2].Id;
+
+            // Check if the dependency already exists
+            if (s_dal.Dependency.Read(t=>t.DependentTask==dependentTaskId&&t.DependsOnTask==dependsOnTaskId)==null)
+            {
+                Dependency item = new Dependency();
+                item.DependentTask = dependentTaskId;
+                item.DependsOnTask = dependsOnTaskId;
+                s_dal!.Dependency.Create(item);
+            }
+        }
+
+        
+
         #endregion
         #region temporary initialization
-        //גם בתלויות יצרנו תלויות ספציפיות כדי לעקוב אחרי האלגוריתם של לוז הפרויקט
-        s_dal!.Dependency.Create(new Dependency(1783, 1781));
-        s_dal!.Dependency.Create(new Dependency(1783, 1782));
-        s_dal!.Dependency.Create(new Dependency(1784, 1783));
-        s_dal!.Dependency.Create(new Dependency(1785, 1783));
+        ////גם בתלויות יצרנו תלויות ספציפיות כדי לעקוב אחרי האלגוריתם של לוז הפרויקט
+        //s_dal!.Dependency.Create(new Dependency(1783, 1781));
+        //s_dal!.Dependency.Create(new Dependency(1783, 1782));
+        //s_dal!.Dependency.Create(new Dependency(1784, 1783));
+        //s_dal!.Dependency.Create(new Dependency(1785, 1783));
         #endregion
     }
     public static void Do()
